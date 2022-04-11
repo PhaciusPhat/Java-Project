@@ -1,4 +1,5 @@
 package com.example.javaschoolproject;
+
 import com.example.javaschoolproject.Storage.StorageProperties;
 import com.example.javaschoolproject.Storage.StorageService;
 import org.springframework.boot.CommandLineRunner;
@@ -8,10 +9,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import java.sql.Timestamp;
+
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableConfigurationProperties(StorageProperties.class)
-public class JavaSchoolProjectApplication{
+public class JavaSchoolProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(JavaSchoolProjectApplication.class, args);
     }
@@ -19,7 +22,6 @@ public class JavaSchoolProjectApplication{
     @Bean
     CommandLineRunner init(StorageService storageService) {
         return (args) -> {
-//            storageService.deleteAll();
             storageService.init();
         };
     }

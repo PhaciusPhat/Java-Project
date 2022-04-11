@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -17,24 +17,36 @@ public class User extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long user_id;
-    @NotNull
     @Column(unique = true)
+    @NotNull(message = "user_username not null")
+    @NotEmpty(message = "user_username not empty")
+    @NotBlank(message = "user_username not blank")
     private String user_username;
-    @NotNull
+    @NotNull(message = "user_password not null")
+    @NotEmpty(message = "user_password not empty")
+    @NotBlank(message = "user_password not blank")
     private String user_password;
     @NotNull
+//    @Min(value=10, message = "user_phone must 10 number")
+//    @Max(value=10, message = "user_phone must 10 number")
     @Column(columnDefinition = "nvarchar(10)")
     private String user_phone;
-    @NotNull
+    @NotNull(message = "user_name not null")
+    @NotEmpty(message = "user_name not empty")
+    @NotBlank(message = "user_name not blank")
     private String user_name;
-    @NotNull
+    @Column(unique = true)
+    @NotNull(message = "user_email not null")
+    @NotEmpty(message = "user_email not empty")
+    @NotBlank(message = "user_email not blank")
     private String user_email;
-    @NotNull
     private Role user_role;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Invoice> invoices;
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "cart_user",cascade = CascadeType.ALL)
+    private List<Cart> cartUserList;
     public User(String user_username, String user_password, String user_phone, String user_name, String user_email, Role user_role) {
         this.user_username = user_username;
         this.user_password = user_password;

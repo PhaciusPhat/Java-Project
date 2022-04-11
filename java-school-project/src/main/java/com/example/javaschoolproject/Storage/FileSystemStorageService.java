@@ -10,6 +10,8 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.util.stream.Stream;
 
+import com.example.javaschoolproject.Exception.StorageException;
+import com.example.javaschoolproject.Exception.StorageFileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -28,12 +30,12 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public void store(MultipartFile file, Timestamp timestamp) {
+	public void store(MultipartFile file, String fileName) {
 		try {
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file.");
 			}
-			String fileName = String.valueOf(timestamp.getTime())+ "_" + file.getOriginalFilename();
+
 			Path destinationFile = this.rootLocation.resolve(
 					Paths.get(fileName))
 					.normalize().toAbsolutePath();

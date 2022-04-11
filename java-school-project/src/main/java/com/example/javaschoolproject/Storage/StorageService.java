@@ -11,7 +11,7 @@ public interface StorageService {
 
 	void init();
 
-	void store(MultipartFile file, Timestamp timestamp);
+	void store(MultipartFile file, String filename);
 
 	public String getUrlFile(String fileName);
 

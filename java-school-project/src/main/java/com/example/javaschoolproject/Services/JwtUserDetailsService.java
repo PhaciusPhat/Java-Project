@@ -1,6 +1,7 @@
 package com.example.javaschoolproject.Services;
 
 import com.example.javaschoolproject.Enum.Role;
+import com.example.javaschoolproject.Exception.BadRequestException;
 import com.example.javaschoolproject.Models.User;
 import com.example.javaschoolproject.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-
     private PasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -31,25 +31,27 @@ public class JwtUserDetailsService implements UserDetailsService {
         if(user == null){
             throw new UsernameNotFoundException("User not found with username: " + username);
         } else{
-            Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            Collection<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(user.getUser_role().toString()));
             return new org.springframework.security.core.userdetails.User(user.getUser_username(), user.getUser_password(),
                     authorities);
         }
     }
 
-    public boolean registerUser(User user){
 
+
+    public void registerUser(User user){
         User temp = userRepository.findByUsername(user.getUser_username());
-        if(temp == null){
-            user.setUser_password(bcryptEncoder.encode(user.getUser_password()));
-            user.setUser_role(Role.CLIENT);
-            userRepository.save(user);
-            return true;
+        if(temp != null){
+            throw new BadRequestException("Already have user own this username");
         }
-        return false;
-
-
+        temp = userRepository.findByEmail(user.getUser_email());
+        if(temp != null){
+            throw new BadRequestException("Already have user own this email");
+        }
+        user.setUser_password(bcryptEncoder.encode(user.getUser_password()));
+        user.setUser_role(Role.CLIENT);
+        userRepository.save(user);
 
     }
 
