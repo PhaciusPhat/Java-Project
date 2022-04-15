@@ -17,6 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import java.util.List;
 
+//@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "api/product-type")

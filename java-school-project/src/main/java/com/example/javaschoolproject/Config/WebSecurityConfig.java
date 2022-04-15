@@ -1,5 +1,7 @@
-package com.example.javaschoolproject.Security;
+package com.example.javaschoolproject.Config;
 
+import com.example.javaschoolproject.Security.JwtAuthenticationEntryPoint;
+import com.example.javaschoolproject.Security.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
-        httpSecurity.csrf().disable()
+        httpSecurity.cors().and().csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate", "/register", "/**").permitAll().
 //                        antMatchers("/api/product/**").hasAuthority("CLIENT").
