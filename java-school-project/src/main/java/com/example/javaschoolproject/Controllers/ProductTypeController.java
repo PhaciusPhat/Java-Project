@@ -21,33 +21,37 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(path = "api/product-type")
 public class ProductTypeController {
-    private final ProductTypeService productTypeService;
+    @Autowired
+    private ProductTypeService productTypeService;
 
+    // list
     @GetMapping("/")
     public ResponseEntity<?> getProductTypeList() {
-        List<ProductType> productTypeList = productTypeService.getProductTypeList();
-        return ResponseEntity.ok(productTypeList);
+        return ResponseEntity.ok(productTypeService.getProductTypeList());
     }
 
+    //  find by name
     @GetMapping("/find")
-    public ResponseEntity<?> getProductTypeListByName(@RequestParam String pt_name){
-        List<ProductType> productTypeList = productTypeService.getProductTypeListByName(pt_name);
-        return ResponseEntity.ok(productTypeList);
+    public ResponseEntity<?> getProductTypeListByName(@RequestParam String pt_name) {
+        return ResponseEntity.ok(productTypeService.getProductTypeListByName(pt_name));
     }
 
+    // find by id
     @SneakyThrows
     @GetMapping("/{pt_id}")
     public ResponseEntity<?> getProductTypeById(@PathVariable Long pt_id) {
-        ProductType productType = productTypeService.getProductTypeById(pt_id);
-        return ResponseEntity.ok(productType);
+//        System.out.println(productTypeService.getProductTypeById(pt_id));
+        return ResponseEntity.ok(productTypeService.getProductTypeById(pt_id));
     }
 
+    // create
     @PostMapping
-    public ResponseEntity<?> createProductType(@RequestBody @Valid ProductType productType){
+    public ResponseEntity<?> createProductType(@RequestBody @Valid ProductType productType) {
         productTypeService.createProductType(productType);
         return ResponseEntity.ok("Create product type success");
     }
 
+    //  update
     @SneakyThrows
     @PutMapping("/{pt_id}")
     public ResponseEntity<?> updateProductType(@RequestBody @Valid ProductType productType, @PathVariable Long pt_id) {
@@ -55,6 +59,7 @@ public class ProductTypeController {
         return ResponseEntity.ok("Update product type success");
     }
 
+    // delete
     @SneakyThrows
     @DeleteMapping("/{pt_id}")
     public ResponseEntity<?> deleteProductType(@PathVariable Long pt_id) {

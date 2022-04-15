@@ -3,6 +3,7 @@ package com.example.javaschoolproject.Security;
 import com.example.javaschoolproject.Exception.BadRequestException;
 import com.example.javaschoolproject.Services.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,9 +26,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+             {
 
         final String requestTokenHeader = request.getHeader("Authorization");
 
@@ -40,12 +42,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
-                throw new BadRequestException("Unable to get JWT Token");
+                response.sendError(400, "Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
-                throw new BadRequestException("JWT Token has expired");
+                response.sendError(400, "JWT Expired");
+//                throw new BadRequestException("JWT Expired");
             }
+
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
         }

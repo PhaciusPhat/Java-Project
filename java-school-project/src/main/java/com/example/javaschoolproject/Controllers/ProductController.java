@@ -35,7 +35,8 @@ public class ProductController {
     @SneakyThrows
     @GetMapping("/{p_id}")
     public ResponseEntity<?> getProductList(@PathVariable Long p_id) {
-        return ResponseEntity.ok(productService.getProductById(p_id));
+        Product p = productService.getProductById(p_id);
+        return ResponseEntity.ok(p);
     }
 
     @PostMapping("/")

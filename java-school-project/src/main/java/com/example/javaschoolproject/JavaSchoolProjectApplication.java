@@ -2,6 +2,7 @@ package com.example.javaschoolproject;
 
 import com.example.javaschoolproject.Storage.StorageProperties;
 import com.example.javaschoolproject.Storage.StorageService;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,11 @@ import java.sql.Timestamp;
 public class JavaSchoolProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(JavaSchoolProjectApplication.class, args);
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
     @Bean

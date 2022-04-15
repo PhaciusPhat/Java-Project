@@ -1,5 +1,6 @@
 package com.example.javaschoolproject.Exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -53,10 +55,25 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleBindException(BindException e) {
+    public String ApiExceptionHandler(BindException e) {
         String errorMessage = "Request's illegal";
         if (e.getBindingResult().hasErrors())
             System.out.println(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
         return errorMessage;
     }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String ApiExceptionHandler(ExpiredJwtException e) {
+        String errorMessage = "JWT Token has expired";
+        return errorMessage;
+    }
+
+//    @ExceptionHandler(IOException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public String handleIOException(IOException e) {
+//        String errorMessage = "Something wrong";
+//        return errorMessage;
+//    }
+
 }

@@ -8,23 +8,35 @@ import com.example.javaschoolproject.Models.User;
 import com.example.javaschoolproject.Repository.UserRepository;
 import com.example.javaschoolproject.Security.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
-    private UserDetails userDetails;
-    private final JwtUserDetailsService jwtUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     private final General general;
     private PasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    private UserDTO convertToDto(User user) {
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        return userDTO;
+    }
+
+    public User getUserById(Long id) throws NotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found user"));
+    }
 
     public User getUserByUsername(String username) throws NotFoundException {
         User user = userRepository.findByUsername(username);
@@ -34,37 +46,35 @@ public class UserService {
         return user;
     }
 
-    private String getUsernameFromToken(String requestTokenHeader){
+    public String getUsernameFromToken(String requestTokenHeader) {
         String jwtToken = requestTokenHeader.substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
         return username;
     }
 
-    private void checkEqualsUser(String checkUsername, String username){
-        if(!checkUsername.equals(username)){
+    private void checkEqualsUser(String checkUsername, String username) {
+        if (!checkUsername.equals(username)) {
             throw new BadRequestException("You can't change info of difference user");
         }
     }
 
-
-
     public UserDTO getUser(String requestTokenHeader) throws NotFoundException {
         String username = getUsernameFromToken(requestTokenHeader);
         User user = getUserByUsername(username);
-        UserDTO userDTO = new UserDTO(user.getUser_username(), user.getUser_name(), user.getUser_email(), user.getUser_phone(), user.getUser_role());
+        UserDTO userDTO = convertToDto(user);
         return userDTO;
     }
 
     public void updateUser(UserDTO userDTO, String requestTokenHeader) throws NotFoundException {
         String username = getUsernameFromToken(requestTokenHeader);
-        checkEqualsUser(username, userDTO.getUsername());
+        checkEqualsUser(username, userDTO.getUser_username());
         User user = getUserByUsername(username);
-        if(userRepository.findByEmail(userDTO.getEmail()) != null && !userDTO.getEmail().equals(user.getUser_email())){
+        if (userRepository.findByEmail(userDTO.getUser_email()) != null && !userDTO.getUser_email().equals(user.getUser_email())) {
             throw new BadRequestException("Already have user own this email");
         }
-        user.setUser_email(userDTO.getEmail());
-        user.setUser_name(userDTO.getName());
-        user.setUser_phone(userDTO.getPhone());
+        user.setUser_email(userDTO.getUser_email());
+        user.setUser_name(userDTO.getUser_name());
+        user.setUser_phone(userDTO.getUser_phone());
         userRepository.save(user);
     }
 
@@ -74,7 +84,7 @@ public class UserService {
         general.authenticate(changePass.getUsername(), changePass.getOld_password());
         User user = getUserByUsername(changePass.getUsername());
         String new_password = changePass.getNew_password();
-        if(changePass.getNew_password() == null || new_password.equals(""))
+        if (changePass.getNew_password() == null || new_password.equals(""))
             throw new BadRequestException("New Password Illegal");
         user.setUser_password(bcryptEncoder.encode(changePass.getNew_password()));
         userRepository.save(user);
@@ -82,39 +92,39 @@ public class UserService {
 
 //    admin
 
-    private void checkEqualsUserAdmin(String checkUsername, String username){
-        if(checkUsername.equals(username)){
+    private void checkEqualsUserAdmin(String checkUsername, String username) {
+        if (checkUsername.equals(username)) {
             throw new BadRequestException("You can't change info your Role or delete yourself");
         }
     }
 
-    public List<User> getUserList(){
-        return userRepository.findAll();
+    public List<UserDTO> getUserList() {
+        return userRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
     }
+
+    public List<UserDTO> getUserListByName(String user_name) {
+        return userRepository.findUserListByName(user_name).stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
 
     public void changeRole(String requestTokenHeader, UserDTO userDTO) throws NotFoundException {
         String username = getUsernameFromToken(requestTokenHeader);
-        checkEqualsUserAdmin(username, userDTO.getUsername());
-        User user = getUserByUsername(userDTO.getUsername());
-        user.setUser_role(userDTO.getRole());
+        checkEqualsUserAdmin(username, userDTO.getUser_username());
+        User user = getUserByUsername(userDTO.getUser_username());
+        user.setUser_role(userDTO.getUser_role());
         userRepository.save(user);
     }
 
 
-
-    public void deleteUser(String requestTokenHeader, String Username) throws NotFoundException {
+    public void deleteUser(String requestTokenHeader, Long user_id) throws NotFoundException {
         String username = getUsernameFromToken(requestTokenHeader);
-        checkEqualsUserAdmin(username, Username);
-        User user = getUserByUsername(Username);
-        if(user.getCartUserList().size() > 0 || user.getInvoices().size() > 0){
-            throw  new BadRequestException("Can't not delete this user");
+        User user = getUserById(user_id);
+        checkEqualsUserAdmin(username, user.getUser_username());
+        if (user.getCartUserList().size() > 0 || user.getInvoices().size() > 0) {
+            throw new BadRequestException("Can't not delete this user");
         }
-        userRepository.deleteById(user.getUser_id());
+        userRepository.deleteById(user_id);
     }
-
-
-
-
 
 
 }

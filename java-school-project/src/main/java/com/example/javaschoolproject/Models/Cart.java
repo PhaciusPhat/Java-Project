@@ -14,18 +14,18 @@ import javax.validation.constraints.NotNull;
 @Entity(name="Cart")
 public class Cart {
     @EmbeddedId
+    @JsonIgnore
     private CartUser cartUser;
     @NotNull(message = "cart_number not null")
     @NotEmpty(message = "cart_number not empty")
     @NotBlank(message = "cart_number not blank")
     private int cart_number;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @MapsId("user_id")
     @JoinColumn(name="user_id")
     private User cart_user;
-    @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @MapsId("p_id")
     @JoinColumn(name="p_id")
     private Product cart_product;
