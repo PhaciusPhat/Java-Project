@@ -38,12 +38,17 @@ public class InvoiceService {
         return invoiceDetailService.findByInvoiceId(id);
     }
 
-    public List<Invoice> getInvoicesByDateByAdmin(Timestamp start_date, Timestamp end_date) {
+    public List<Invoice> getInvoicesByDateByAdmin(long start_date, long end_date) {
         return invoiceRepository.getInvoicesByDateByAdmin(start_date, end_date);
     }
 
-    public List<Invoice> getInvoicesByDate(String requestTokenHeader, Timestamp start_date, Timestamp end_date) throws NotFoundException {
+    public List<Invoice> getInvoicesByDate(String requestTokenHeader, long start_date, long end_date) throws NotFoundException {
         User user = userService.getUserByUsername(userService.getUsernameFromToken(requestTokenHeader));
+        Invoice invoice = invoiceRepository.findById(user.getUser_id()).orElseThrow(() -> new NotFoundException("Invoice not found"));
+        System.out.println(invoice.getCreatedDate());
+        System.out.println(start_date);
+        System.out.println(end_date);
+        System.out.println(invoice.getCreatedDate() >= start_date);
         return invoiceRepository.getInvoicesByDate(start_date, end_date, user.getUser_id());
     }
 

@@ -23,8 +23,8 @@ import java.sql.Timestamp;
 public abstract class Auditable {
     @CreatedDate
     @Column(updatable = false)
-    private Timestamp createdDate;
+    private long createdDate;
 
     @LastModifiedDate
-    private Timestamp modifiedDate;
+    private long modifiedDate;
 }

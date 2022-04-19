@@ -15,13 +15,13 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     List<Invoice> getInvoicesByUser(@Param("user_id") long user_id);
 
     @Query("from Invoice i where i.createdDate >= ?1 and i.createdDate <= ?2 and i.user.user_id = ?3")
-    List<Invoice> getInvoicesByDate(@Param("start_date") Timestamp start_date, @Param("end_date") Timestamp end_date, @Param("user_id") long user_id);
+    List<Invoice> getInvoicesByDate(@Param("start_date") long start_date, @Param("end_date") long end_date, @Param("user_id") long user_id);
 
     @Query("from Invoice i where i.user.user_name LIKE CONCAT('%',?1,'%')")
     List<Invoice> getInvoicesByUserByAdmin(@Param("user_name") String user_name);
 
     @Query("from Invoice i where i.createdDate >= ?1 and i.createdDate <= ?2")
-    List<Invoice> getInvoicesByDateByAdmin(@Param("start_date") Timestamp start_date, @Param("end_date") Timestamp end_date);
+    List<Invoice> getInvoicesByDateByAdmin(@Param("start_date") long start_date, @Param("end_date") long end_date);
 
 }
 

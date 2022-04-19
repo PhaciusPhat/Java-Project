@@ -19,7 +19,7 @@ public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
 
-    @GetMapping("/admin/")
+    @GetMapping("/admin")
     public ResponseEntity<?> getAllInvoices() {
         return ResponseEntity.ok(invoiceService.getAllInvoices());
     }
@@ -30,7 +30,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/admin/findByDate")
-    public ResponseEntity<?>  getInvoicesByDateByAdmin(@RequestParam("start_date") Timestamp start_date, @RequestParam("end_date") Timestamp end_date){
+    public ResponseEntity<?>  getInvoicesByDateByAdmin(@RequestParam("start_date") long start_date, @RequestParam("end_date") long end_date){
         return ResponseEntity.ok(invoiceService.getInvoicesByDateByAdmin(start_date, end_date));
     }
 
@@ -51,7 +51,7 @@ public class InvoiceController {
 
     @SneakyThrows
     @GetMapping("/findByDate")
-    public ResponseEntity<?> getInvoicesByDate(HttpServletRequest request, @RequestParam("start_date") Timestamp start_date, @RequestParam("end_date") Timestamp end_date) {
+    public ResponseEntity<?> getInvoicesByDate(HttpServletRequest request, @RequestParam("start_date") long start_date, @RequestParam("end_date") long end_date) {
         final String requestTokenHeader = request.getHeader("Authorization");
         return ResponseEntity.ok(invoiceService.getInvoicesByDate(requestTokenHeader, start_date, end_date));
     }
