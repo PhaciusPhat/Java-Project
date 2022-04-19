@@ -1,10 +1,7 @@
 package com.example.javaschoolproject.Services;
 
 import com.example.javaschoolproject.Exception.NotFoundException;
-import com.example.javaschoolproject.Models.Cart;
-import com.example.javaschoolproject.Models.CartUser;
-import com.example.javaschoolproject.Models.Product;
-import com.example.javaschoolproject.Models.User;
+import com.example.javaschoolproject.Models.*;
 import com.example.javaschoolproject.Repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,19 +39,19 @@ public class CartService {
         return cartRepository.getCartByUser(user.getUser_id());
     }
 
-    public void addCartItem(String requestTokenHeader, long p_id) throws NotFoundException {
-        setUserAndProduct(requestTokenHeader, p_id);
+    public void addCartItem(String requestTokenHeader, CartRequest cartRequest) throws NotFoundException {
+        setUserAndProduct(requestTokenHeader, cartRequest.getP_id());
 //      if exits increase 1 else create
-        Cart cart = findCartItem(g_user.getUser_id(), p_id);
+        Cart cart = findCartItem(g_user.getUser_id(), cartRequest.getP_id());
         if (cart == null) {
             cart = new Cart();
-            CartUser cartUser = new CartUser(g_user.getUser_id(), p_id);
+            CartUser cartUser = new CartUser(g_user.getUser_id(), cartRequest.getP_id());
             cart.setCart_product(g_product);
             cart.setCartUser(cartUser);
-            cart.setCart_number(1);
+            cart.setCart_number(cartRequest.getNumber());
             cart.setCart_user(g_user);
         } else {
-            int number = cart.getCart_number() + 1;
+            int number = cart.getCart_number() + cartRequest.getNumber();
             System.out.println(number);
             cart.setCart_number(number);
         }

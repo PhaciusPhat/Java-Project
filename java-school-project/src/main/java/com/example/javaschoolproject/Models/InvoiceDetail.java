@@ -15,24 +15,25 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InvoiceDetail extends Auditable{
+    @JsonIgnore
     @EmbeddedId
     private ProductInvoice productInvoice;
 
     @NotNull(message = "number not null")
     @NotEmpty(message = "number not empty")
     @NotBlank(message = "number not blank")
-    private long number;
+    private int number;
     @NotNull(message = "price not null")
     @NotEmpty(message = "price not empty")
     @NotBlank(message = "price not blank")
-    private long price;
+    private int price;
 
     @JsonIgnore
     @ManyToOne
     @MapsId("iv_id")
     @JoinColumn(name="iv_id")
     private Invoice invoices;
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @MapsId("p_id")
     @JoinColumn(name="p_id")

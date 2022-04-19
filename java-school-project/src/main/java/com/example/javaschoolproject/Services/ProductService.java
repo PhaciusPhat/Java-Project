@@ -102,4 +102,9 @@ public class ProductService {
     }
 
 
+    public void updateProductNumberAfterBuy(long p_id, int p_number) throws NotFoundException {
+        Product product = getProductById(p_id);
+        product.setP_number(product.getP_number() - p_number);
+        productRepository.save(product);
+    }
 }

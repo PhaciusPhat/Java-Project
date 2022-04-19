@@ -1,6 +1,7 @@
 package com.example.javaschoolproject.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name="Invoice")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Invoice extends Auditable{
     @Id
     @GeneratedValue
@@ -30,12 +32,6 @@ public class Invoice extends Auditable{
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id",nullable = false,referencedColumnName = "user_id")
     private User user;
-    @JsonIgnore
     @OneToMany(mappedBy = "invoices",cascade = CascadeType.ALL)
     private List<InvoiceDetail> invoiceDetailList;
-    public Invoice(long iv_total, String iv_address, String iv_describe) {
-        this.iv_total = iv_total;
-        this.iv_address = iv_address;
-        this.iv_describe = iv_describe;
-    }
 }
