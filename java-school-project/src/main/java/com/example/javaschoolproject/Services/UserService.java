@@ -1,6 +1,7 @@
 package com.example.javaschoolproject.Services;
 
 import com.example.javaschoolproject.DTO.UserDTO;
+import com.example.javaschoolproject.Enum.Role;
 import com.example.javaschoolproject.Exception.BadRequestException;
 import com.example.javaschoolproject.Exception.NotFoundException;
 import com.example.javaschoolproject.Models.ChangePass;
@@ -95,6 +96,12 @@ public class UserService {
     private void checkEqualsUserAdmin(String checkUsername, String username) {
         if (checkUsername.equals(username)) {
             throw new BadRequestException("You can't change info your Role or delete yourself");
+        } else {
+            User userCheck = userRepository.findByUsername(checkUsername);
+            User user = userRepository.findByUsername(username);
+            if(userCheck.getUser_role() == Role.ADMIN && user.getUser_role() == Role.SUPER_ADMIN){
+                throw new BadRequestException("You can't change info of user have bigger role");
+            }
         }
     }
 

@@ -49,11 +49,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
         httpSecurity.cors().and().csrf().disable()
+                .authorizeRequests()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate", "/register", "/**").permitAll().
-//                        antMatchers("/api/product/**").hasAuthority("CLIENT").
+                .antMatchers("/authenticate", "/register", "/img/**", "/api/product/**", "/api/product-type/**" ).permitAll().
+                        antMatchers("/admin/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN").
                 // all other requests need to be authenticated
-//                        anyRequest().authenticated().
+                        antMatchers("/api/cart/**", "/api/invoice/**", "/api/user/**").authenticated().
         and().
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -15,12 +15,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class ProductService<linkStoreImg> {
     private final ProductRepository productRepository;
     private final ProductTypeService productTypeService;
     private final StorageService storageService;
     private final
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+    private final String linkStoreImg = "http://localhost:2222/img/";
 
     public List<Product> getProductList() {
         return productRepository.findAll();
@@ -66,7 +68,7 @@ public class ProductService {
         if (validateProduct(product, true, null)) {
             String filename = timestamp.getTime() + "_" + p_img.getOriginalFilename();
             storageService.store(p_img, filename);
-            filename = "http://localhost:2222/" + filename;
+            filename = linkStoreImg + filename;
             product.setP_img(filename);
             product.setProduct_type(productType);
             productRepository.save(product);
@@ -80,13 +82,14 @@ public class ProductService {
             if (p_img.getSize() > 0) {
                 String filename = timestamp.getTime() + "_" + p_img.getOriginalFilename();
                 storageService.store(p_img, filename);
-                filename = "http://localhost:2222/" + filename;
+                filename = linkStoreImg + filename;
                 p.setP_img(filename);
             }
             p.setP_name(product.getP_name());
             p.setP_des(product.getP_des());
             p.setP_number(product.getP_number());
             p.setP_price(product.getP_price());
+            p.setProduct_type(product.getProduct_type());
             productRepository.save(p);
         }
 

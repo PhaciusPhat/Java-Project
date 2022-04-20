@@ -16,7 +16,7 @@ public class GeneralController {
 
     private final StorageService storageService;
 
-    @GetMapping("/{file_name}")
+    @GetMapping("/img/{file_name}")
     @ResponseBody
     public void getFile(@PathVariable String file_name, HttpServletResponse response) throws IOException {
         File file = new File(storageService.getUrlFile(file_name));

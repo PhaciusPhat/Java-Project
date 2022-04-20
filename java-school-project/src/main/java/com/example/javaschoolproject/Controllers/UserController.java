@@ -20,39 +20,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/admin")
-    public ResponseEntity<?> getUserList() {
-        return ResponseEntity.ok(userService.getUserList());
-    }
-
-    @GetMapping("/admin/find")
-    public ResponseEntity<?> getUserListByName(@RequestParam String user_name){
-        return ResponseEntity.ok(userService.getUserListByName(user_name));
-    }
-
-    @SneakyThrows
-    @GetMapping("/admin/{user_id}")
-    public ResponseEntity<?> getUserDetail(@PathVariable Long user_id) {
-        return ResponseEntity.ok(userService.getUserById(user_id));
-    }
-
-    @SneakyThrows
-    @PutMapping("/admin/{user_id}")
-    public ResponseEntity<?> changeRole(HttpServletRequest request,@RequestBody UserDTO userDTO, @PathVariable Long user_id) {
-        final String requestTokenHeader = request.getHeader("Authorization");
-        userService.changeRole(requestTokenHeader, userDTO);
-        return ResponseEntity.ok("Update Role Success");
-
-    }
-
-    @SneakyThrows
-    @DeleteMapping("/admin/{user_id}")
-    public ResponseEntity<?> deleteUser(HttpServletRequest request, @PathVariable Long user_id) {
-        final String requestTokenHeader = request.getHeader("Authorization");
-        userService.deleteUser(requestTokenHeader, user_id);
-        return ResponseEntity.ok("Delete user successfully");
-    }
-
 
     @SneakyThrows
     @GetMapping("/")
