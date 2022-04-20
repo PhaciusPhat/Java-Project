@@ -3,12 +3,10 @@ package com.example.javaschoolproject.Services;
 import com.example.javaschoolproject.Exception.BadRequestException;
 import com.example.javaschoolproject.Exception.NotFoundException;
 import com.example.javaschoolproject.Models.*;
-import com.example.javaschoolproject.Repository.CartRepository;
 import com.example.javaschoolproject.Repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,9 @@ import java.util.List;
 public class InvoiceService {
     @Autowired
     private InvoiceRepository invoiceRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private UserService userService;
@@ -111,7 +112,14 @@ public class InvoiceService {
         Invoice resave_invoice = invoiceRepository.findById(invoice.getIv_id()).get();
         resave_invoice.setIv_total(total);
         invoiceRepository.save(resave_invoice);
-
+//        send email
+        emailService.sendMail(user.getUser_email(),
+                "Xác nhận thanh toán thành công",
+                "Xin chào " + user.getUser_name()
+                + "!\n" + "Bạn đã thanh toán thành công đơn hàng của bạn. Xin cảm ơn bạn đã sử dụng dịch vụ của chúng tôi"
+                + "\n" + "Đơn hàng của bạn có giá trị là: " + total + " VND"
+                + "\n" + "Đơn hàng của bạn sẽ được giao trong khoảng 2-3 ngày nữa. Xin cảm ơn!"
+                + "\n" + "Nếu có thắc mắc gì xin liên hệ qua số điện thoại: 0774802203. Trân Trọng!");
     }
 
 
