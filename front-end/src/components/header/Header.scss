@@ -1,0 +1,60 @@
+$main__color: #1b539e;
+
+.header__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  padding: 0.25rem;
+
+  background-color: $main__color;
+  color: white;
+
+  .header__logo {
+    padding: 0.5rem;
+    background-color: white;
+    border-radius: 50%;
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  .header__input {
+    display: flex;
+    flex-basis: 45%;
+
+    position: relative;
+
+    input {
+      width: 100%;
+      font-size: 1.2rem;
+      padding: 0.5rem;
+      padding-right: 3rem;
+    }
+
+    button {
+      position: absolute;
+      right: 1%;
+      top: 20%;
+
+      //   padding: 0.5rem;
+      font-size: 2rem;
+      color: $main__color;
+      background-color: transparent;
+    }
+  }
+
+  .header__navigation {
+    ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      a {
+        color: white;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}

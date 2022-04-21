@@ -8,7 +8,7 @@ function Sign__up() {
           <div className="login__sign-up__header">
             <div className="login__sign-up__logo">
               <a href="/">
-                <img src="../images/logo.png" alt="" srcset="" />
+                <img src="../images/logo.png" alt="" srcSet="" />
               </a>
             </div>
             <div className="login__sign-up__title">Đăng Ký</div>
