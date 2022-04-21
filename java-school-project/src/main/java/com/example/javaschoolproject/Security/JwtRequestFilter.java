@@ -5,6 +5,7 @@ import com.example.javaschoolproject.Services.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,10 +43,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
+//                throw new BadRequestException("Invalid JWT token");
                 response.sendError(400, "Unable to get JWT Token");
+                return;
             } catch (ExpiredJwtException e) {
                 response.sendError(400, "JWT Expired");
+                return;
 //                throw new BadRequestException("JWT Expired");
+            } catch (AccessDeniedException e) {
+                throw new AccessDeniedException("Access Denied");
             }
 
         } else {
