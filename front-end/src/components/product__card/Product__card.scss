@@ -1,0 +1,31 @@
+.product__card {
+  padding: 0.5rem;
+  border: 1px solid rgb(194, 190, 190);
+  cursor: pointer;
+
+  img {
+    width: 100%;
+  }
+
+  .product__card__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .product__card__info__name {
+      font-family: "Pacifico", cursive;
+      font-weight: bold;
+      font-size: 1.25rem;
+
+      width: 15rem;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .product__card__info__price {
+      font-size: 1rem;
+    }
+  }
+}
