@@ -31,4 +31,9 @@ public class InvoiceManageController {
     public ResponseEntity<?>  getInvoicesByDateByAdmin(@RequestParam("start_date") long start_date, @RequestParam("end_date") long end_date){
         return ResponseEntity.ok(invoiceService.getInvoicesByDateByAdmin(start_date, end_date));
     }
+
+    @GetMapping("/findByDateAndUser")
+    public ResponseEntity<?>  getInvoicesByDateAndUserByAdmin(@RequestParam("start_date") long start_date, @RequestParam("end_date") long end_date, @RequestParam("user_name") String user_name){
+        return ResponseEntity.ok(invoiceService.getInvoicesByDateAndUserByAdmin(start_date, end_date, user_name));
+    }
 }

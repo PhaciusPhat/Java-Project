@@ -1,0 +1,16 @@
+.table__paginate {
+  display: flex;
+  gap: .5rem;
+  input {
+    border: none;
+    text-align: center;
+    width: 10%;
+  }
+  button {
+    width: fit-content;
+    padding: 0.5rem;
+    background-color: #1b539e;
+    color: white;
+    font-weight: bold;
+  }
+}

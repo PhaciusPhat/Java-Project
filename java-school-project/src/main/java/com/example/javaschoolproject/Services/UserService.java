@@ -99,7 +99,7 @@ public class UserService {
         } else {
             User userCheck = userRepository.findByUsername(checkUsername);
             User user = userRepository.findByUsername(username);
-            if(userCheck.getUser_role() == Role.ADMIN && user.getUser_role() == Role.SUPER_ADMIN){
+            if (userCheck.getUser_role() == Role.ADMIN && user.getUser_role() == Role.SUPER_ADMIN) {
                 throw new BadRequestException("You can't change info of user have bigger role");
             }
         }
@@ -114,10 +114,13 @@ public class UserService {
     }
 
 
-    public void changeRole(String requestTokenHeader, UserDTO userDTO) throws NotFoundException {
+    public void changeRole(String requestTokenHeader, UserDTO userDTO, long user_id) throws NotFoundException {
+//        admin
         String username = getUsernameFromToken(requestTokenHeader);
+//        check admin vs user
         checkEqualsUserAdmin(username, userDTO.getUser_username());
-        User user = getUserByUsername(userDTO.getUser_username());
+//      get user
+        User user = getUserById(user_id);
         user.setUser_role(userDTO.getUser_role());
         userRepository.save(user);
     }

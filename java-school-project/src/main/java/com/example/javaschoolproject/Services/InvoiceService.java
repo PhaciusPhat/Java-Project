@@ -1,9 +1,12 @@
 package com.example.javaschoolproject.Services;
 
+import com.example.javaschoolproject.DTO.InvoiceDTO;
+import com.example.javaschoolproject.DTO.UserDTO;
 import com.example.javaschoolproject.Exception.BadRequestException;
 import com.example.javaschoolproject.Exception.NotFoundException;
 import com.example.javaschoolproject.Models.*;
 import com.example.javaschoolproject.Repository.InvoiceRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +33,23 @@ public class InvoiceService {
     @Autowired
     private InvoiceDetailService invoiceDetailService;
 
-    public List<Invoice> getAllInvoices() {
-        return invoiceRepository.findAll();
+    @Autowired
+    private ModelMapper modelMapper;
+
+    private UserDTO convertToDto(User user) {
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        return userDTO;
+    }
+
+    private InvoiceDTO convertToDto(Invoice invoice) {
+        UserDTO userDTO = convertToDto(invoice.getUser());
+        InvoiceDTO invoiceDTO = modelMapper.map(invoice, InvoiceDTO.class);
+        invoiceDTO.setUserDTO(userDTO);
+        return invoiceDTO;
+    }
+
+    public List<InvoiceDTO> getAllInvoices() {
+        return invoiceRepository.findAll().stream().map(this::convertToDto).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
     public List<InvoiceDetail> getInvoiceById(Long id) throws NotFoundException {
@@ -39,28 +57,29 @@ public class InvoiceService {
         return invoiceDetailService.findByInvoiceId(id);
     }
 
-    public List<Invoice> getInvoicesByDateByAdmin(long start_date, long end_date) {
-        return invoiceRepository.getInvoicesByDateByAdmin(start_date, end_date);
+    public List<InvoiceDTO> getInvoicesByDateByAdmin(long start_date, long end_date) {
+        return invoiceRepository.getInvoicesByDateByAdmin(start_date, end_date).stream().map(this::convertToDto).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
-    public List<Invoice> getInvoicesByDate(String requestTokenHeader, long start_date, long end_date) throws NotFoundException {
+    public List<InvoiceDTO> getInvoicesByDate(String requestTokenHeader, long start_date, long end_date) throws NotFoundException {
         User user = userService.getUserByUsername(userService.getUsernameFromToken(requestTokenHeader));
-        Invoice invoice = invoiceRepository.findById(user.getUser_id()).orElseThrow(() -> new NotFoundException("Invoice not found"));
-        System.out.println(invoice.getCreatedDate());
-        System.out.println(start_date);
-        System.out.println(end_date);
-        System.out.println(invoice.getCreatedDate() >= start_date);
-        return invoiceRepository.getInvoicesByDate(start_date, end_date, user.getUser_id());
+//        check xem user co invoice nao ko
+//        Invoice invoice = invoiceRepository.findById(user.getUser_id()).orElseThrow(() -> new NotFoundException("Invoice not found"));
+        return invoiceRepository.getInvoicesByDate(start_date, end_date, user.getUser_id()).stream().map(this::convertToDto).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
-    public List<Invoice> getInvoicesByUser(String requestTokenHeader) throws NotFoundException {
+    public List<InvoiceDTO> getInvoicesByUser(String requestTokenHeader) throws NotFoundException {
         User user = userService.getUserByUsername(userService.getUsernameFromToken(requestTokenHeader));
         List<Invoice> invoices = invoiceRepository.getInvoicesByUser(user.getUser_id());
-        return invoices;
+        return invoices.stream().map(this::convertToDto).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
-    public List<Invoice> getInvoicesByUserByAdmin(String user_name) {
-        return invoiceRepository.getInvoicesByUserByAdmin(user_name);
+    public List<InvoiceDTO> getInvoicesByDateAndUserByAdmin(long start_date, long end_date, String user_name) {
+        return invoiceRepository.getInvoicesByDateByUserByAdmin(start_date, end_date, user_name).stream().map(this::convertToDto).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+    }
+
+    public List<InvoiceDTO> getInvoicesByUserByAdmin(String user_name) {
+        return invoiceRepository.getInvoicesByUserByAdmin(user_name).stream().map(this::convertToDto).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
 
@@ -116,10 +135,10 @@ public class InvoiceService {
         emailService.sendMail(user.getUser_email(),
                 "Xác nhận thanh toán thành công",
                 "Xin chào " + user.getUser_name()
-                + "!\n" + "Bạn đã thanh toán thành công đơn hàng của bạn. Xin cảm ơn bạn đã sử dụng dịch vụ của chúng tôi"
-                + "\n" + "Đơn hàng của bạn có giá trị là: " + total + " VND"
-                + "\n" + "Đơn hàng của bạn sẽ được giao trong khoảng 2-3 ngày nữa. Xin cảm ơn!"
-                + "\n" + "Nếu có thắc mắc gì xin liên hệ qua số điện thoại: 0774802203. Trân Trọng!");
+                        + "!\n" + "Bạn đã thanh toán thành công đơn hàng của bạn. Xin cảm ơn bạn đã sử dụng dịch vụ của chúng tôi"
+                        + "\n" + "Đơn hàng của bạn có giá trị là: " + total + " VND"
+                        + "\n" + "Đơn hàng của bạn sẽ được giao trong khoảng 2-3 ngày nữa. Xin cảm ơn!"
+                        + "\n" + "Nếu có thắc mắc gì xin liên hệ qua số điện thoại: 0774802203. Trân Trọng!");
     }
 
 

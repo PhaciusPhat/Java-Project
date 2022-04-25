@@ -38,7 +38,7 @@ public class UserManageController {
     @PutMapping("/{user_id}")
     public ResponseEntity<?> changeRole(HttpServletRequest request, @RequestBody UserDTO userDTO, @PathVariable Long user_id) {
         final String requestTokenHeader = request.getHeader("Authorization");
-        userService.changeRole(requestTokenHeader, userDTO);
+        userService.changeRole(requestTokenHeader, userDTO, user_id);
         return ResponseEntity.ok("Update Role Success");
 
     }

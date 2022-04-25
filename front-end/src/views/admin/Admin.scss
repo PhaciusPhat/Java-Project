@@ -1,0 +1,102 @@
+.admin__container {
+  margin: 2rem 10rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  .find__tool {
+    display: flex;
+    padding: 2.5rem;
+    background: rgb(245 245 250);
+    border-radius: 20px;
+    gap: 2rem;
+    align-items: center;
+
+    .find__tool__input {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-size: 1.2rem;
+      }
+
+      input {
+        font-size: 1.25rem;
+      }
+
+      .find__date {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      button {
+        width: fit-content;
+        padding: 0.5rem;
+        background-color: #1b539e;
+        color: white;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .admin__table {
+    padding: 2.5rem;
+    background: rgb(245 245 250);
+    border-radius: 20px;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .add__data {
+      position: absolute;
+      top: -25%;
+      right: 0;
+    }
+
+    .table__paginate {
+      position: absolute;
+      bottom: -25%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .table__title {
+      .table__item {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+    }
+
+    .table__item {
+      padding: 0 0.5rem;
+      flex-basis: 20%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .table__title,
+    .table__database {
+      display: flex;
+    }
+    .table__database__list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    button {
+      width: fit-content;
+      padding: 0.5rem;
+      background-color: #1b539e;
+      color: white;
+      font-weight: bold;
+    }
+  }
+}

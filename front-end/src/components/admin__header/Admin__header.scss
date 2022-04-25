@@ -1,0 +1,54 @@
+$main__color: #1b539e;
+
+
+.admin__header__container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2.5rem 0;
+    background: rgb(245 245 250);
+    border-radius: 20px;
+    .admin__header__container__title{
+        font-size: 1.5rem;
+    }
+    button{
+        width: fit-content;
+        padding: 0.5rem;
+        background-color: $main__color;
+        color: white;
+        border-radius: 20px;
+    }
+
+    .admin__header__info{   
+        padding: 0 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .header__logo{
+            img{
+                width: 50px;
+            }
+        }
+
+        .header__info{
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+    }
+
+    .admin__header__navigation{
+        padding: 0 1rem;
+        display: flex;
+        gap: 2.5rem;
+        align-items: center;
+    }
+
+    .active{
+        background: $main__color;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 20px;
+    }
+}

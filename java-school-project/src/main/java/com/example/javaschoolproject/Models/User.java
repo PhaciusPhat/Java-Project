@@ -4,6 +4,7 @@ import com.example.javaschoolproject.Enum.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -17,6 +18,7 @@ public class User extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long user_id;
+//    @ReadOnlyProperty
     @Column(unique = true)
     @NotNull(message = "user_username not null")
     @NotEmpty(message = "user_username not empty")

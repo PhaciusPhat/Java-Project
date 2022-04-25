@@ -21,7 +21,7 @@ function Product() {
           </div>
         </div>
 
-        <hr />
+        <hr />  
 
         <div className="product__description">
           <div className="product__description__title">Mô Tả</div>

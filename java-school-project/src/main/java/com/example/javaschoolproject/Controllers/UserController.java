@@ -31,7 +31,7 @@ public class UserController {
 
     @SneakyThrows
     @PutMapping("/")
-    public ResponseEntity<?> updateUser(HttpServletRequest request, @RequestBody @Valid UserDTO userDTO) {
+    public ResponseEntity<?> updateUser(HttpServletRequest request, @RequestBody UserDTO userDTO) {
         final String requestTokenHeader = request.getHeader("Authorization");
         userService.updateUser(userDTO, requestTokenHeader);
         return ResponseEntity.ok("Update Success");
