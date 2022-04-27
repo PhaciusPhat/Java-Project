@@ -1,11 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineMinus, AiOutlineSearch } from "react-icons/ai";
-function Admin__find__tool() {
+function Admin__find__tool(props) {
+  const { arr } = props;
+
+  const renderTool = () => {
+    const items = document.getElementsByClassName("find__tool__input");
+    for (let item of items) {
+      item.style.display = "none";
+    }
+    for (let index = 0; index < arr.length; index++) {
+      items[index].style.display = "flex";
+    }
+    items[items.length - 1].style.display = "flex";
+  };
+
+  useEffect(() => {
+    renderTool();
+
+  })
+
   return (
     <>
       <div className="find__tool">
         <div className="find__tool__input">
           <label htmlFor="">Tìm kiếm theo tên</label>
+          <input type="text" />
+        </div>
+        <div className="find__tool__input">
+          <label htmlFor="">Tìm kiếm theo loại</label>
           <input type="text" />
         </div>
         <div className="find__tool__input">
@@ -17,7 +39,7 @@ function Admin__find__tool() {
           </div>
         </div>
         <div className="find__tool__input">
-          <label htmlFor="">
+          <label htmlFor="" style={{ color: "transparent" }}>
             <AiOutlineMinus />
           </label>
           <button>

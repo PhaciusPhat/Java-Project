@@ -28,7 +28,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(requestTokenHeader));
     }
 
-
     @SneakyThrows
     @PutMapping("/")
     public ResponseEntity<?> updateUser(HttpServletRequest request, @RequestBody UserDTO userDTO) {

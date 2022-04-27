@@ -8,11 +8,10 @@ import Admin__product from './../../components/admin__product/Admin__product';
 function Admin() {
   return (
     <>
-      <Admin__header />
       {/* <Admin__account /> */}
       {/* <Admin__statictis/> */}
       {/* <Admin__product__type/> */}
-      <Admin__product/>
+      {/* <Admin__product/> */}
     </>
   );
 }

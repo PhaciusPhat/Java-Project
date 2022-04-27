@@ -1,8 +1,11 @@
 import React from "react";
 import Admin__find__tool from "./../admin__find__tool/Admin__find__tool";
+import Admin__header from './../admin__header/Admin__header';
+import "../../views/admin/Admin.scss";
 function Admin__account() {
   return (
     <>
+      <Admin__header />
       <div className="admin__container">
         <Admin__find__tool />
         <div className="admin__table">

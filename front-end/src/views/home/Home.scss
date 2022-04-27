@@ -3,7 +3,7 @@ $main__color: #1b539e;
 .home__carousel{
    img{
        width: 100%;
-       height: 55vh;
+       height: 65vh;
    }
 }
 
@@ -15,7 +15,7 @@ $main__color: #1b539e;
     gap: 3rem;
 
     .home__container__navigate__list{
-        flex-basis: 10%;
+        flex-basis: 12%;
 
         // background-color: rgb(200, 211, 255);
 
@@ -44,6 +44,7 @@ $main__color: #1b539e;
         display: flex;
         flex-wrap: wrap;
         gap: .1rem;
+        flex-basis: 80%;
         .product__card{
             flex-basis: 22.5%;
         }

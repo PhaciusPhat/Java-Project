@@ -33,7 +33,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
              {
 
         final String requestTokenHeader = request.getHeader("Authorization");
-
+        System.out.println("requestTokenHeader: " + requestTokenHeader);
         String username = null;
         String jwtToken = null;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
@@ -44,14 +44,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
 //                throw new BadRequestException("Invalid JWT token");
-                response.sendError(400, "Unable to get JWT Token");
+                System.out.println("Unable to get JWT Token");
+                response.sendError(401, "Unable to get JWT Token");
                 return;
             } catch (ExpiredJwtException e) {
-                response.sendError(400, "JWT Expired");
+                System.out.println("JWT Expired");
+                response.sendError(401, "JWT Expired");
                 return;
 //                throw new BadRequestException("JWT Expired");
             } catch (AccessDeniedException e) {
-                throw new AccessDeniedException("Access Denied");
+                System.out.println("Access Denied");
+                response.sendError(401, "Access Denied");
+                return;
             }
 
         } else {

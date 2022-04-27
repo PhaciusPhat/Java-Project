@@ -56,7 +56,6 @@ public class CartService {
             cart.setCart_number(number);
         }
         cartRepository.save(cart);
-
     }
 
     public void deleteCartItem(String requestTokenHeader, Long p_id) throws NotFoundException {

@@ -20,6 +20,10 @@ button {
   border: none;
 }
 
+button a{
+  color: white !important;
+}
+
 a{
   color: black;
   text-decoration: none;
