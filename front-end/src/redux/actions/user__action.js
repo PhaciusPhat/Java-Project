@@ -1,6 +1,29 @@
 import axios from "axios";
 import swal from "sweetalert";
-import { GET__INFO } from "./../constants/redux__const";
+import { GET__INFO, GET__USER, GET__USERS } from "./../constants/redux__const";
+
+const handleError = (error) => {
+  console.log(error.message);
+  if (error?.response?.status === 401) {
+    swal("", "Phiên Đăng Nhập Hết Hạn", "error").then(() => {
+      localStorage.removeItem("token");
+      window.location.assign("/").then(() => {
+        window.location.reload();
+      });
+    });
+  } else if (error?.response?.status === 404) {
+    swal("", "Không tìm thấy tài khoản của bạn", "error");
+  } else if (error?.response?.status === 400) {
+    swal(
+      "Không thể thay đổi hoặc xóa tài khoản của bạn hoặc tài khoản có quyền cao hơn",
+      "",
+      "error"
+    );
+  } else {
+    swal("", "Lỗi Server", "error");
+  }
+};
+
 export const get__info__action = () => {
   return async (dispatch) => {
     try {
@@ -22,18 +45,7 @@ export const get__info__action = () => {
         });
       }
     } catch (error) {
-      console.log(error.message);
-      if (error?.response?.status === 401) {
-        swal("", "Phiên Đăng Nhập Hết Hạn", "error");
-        localStorage.removeItem("token");
-        window.location.assign("/").then(() => {
-          window.location.reload();
-        });
-      } else if (error?.response?.status === 404) {
-        swal("", "Không tìm thấy tài khoản của bạn", "error");
-      } else {
-        swal("", "Lỗi Server", "error");
-      }
+      handleError(error);
     }
   };
 };
@@ -56,18 +68,7 @@ export const change__info = (user) => {
         });
       }
     } catch (error) {
-      console.log(error.message);
-      if (error?.response?.status === 401) {
-        swal("", "Phiên Đăng Nhập Hết Hạn", "error");
-        localStorage.removeItem("token");
-        window.location.assign("/").then(() => {
-          window.location.reload();
-        });
-      } else if (error?.response?.status === 404) {
-        swal("", "Không tìm thấy tài khoản của bạn", "error");
-      } else {
-        swal("", "Lỗi Server", "error");
-      }
+      handleError(error);
     }
   };
 };
@@ -94,10 +95,11 @@ export const change__pass = (user) => {
     } catch (error) {
       console.log(error.message);
       if (error?.response?.status === 401) {
-        swal("", "Phiên Đăng Nhập Hết Hạn", "error");
-        localStorage.removeItem("token");
-        window.location.assign("/").then(() => {
-          window.location.reload();
+        swal("", "Phiên Đăng Nhập Hết Hạn", "error").then(() => {
+          localStorage.removeItem("token");
+          window.location.assign("/").then(() => {
+            window.location.reload();
+          });
         });
       } else if (error?.response?.status === 400) {
         swal("", "Sai mật khẩu", "error");
@@ -106,6 +108,124 @@ export const change__pass = (user) => {
       } else {
         swal("", "Lỗi Server", "error");
       }
+    }
+  };
+};
+
+export const get__users__action = () => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const res = await axios({
+          url: "http://localhost:2222/admin/user/",
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        dispatch({
+          type: GET__USERS,
+          payload: res.data,
+        });
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
+};
+
+export const get__user__info__action = (id) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const res = await axios({
+          url: `http://localhost:2222/admin/user/${id}`,
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        dispatch({
+          type: GET__USER,
+          payload: res.data,
+        });
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
+};
+
+export const update__user__action = (user, id) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios({
+          url: `http://localhost:2222/admin/user/${id}`,
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: user,
+        });
+        swal("", "Cập nhật thành công", "success").then(() => {
+          window.location.assign("/admin__account").then(() => {
+            window.location.reload();
+          });
+        });
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
+};
+
+export const delete__user__action = (id) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios({
+          url: `http://localhost:2222/admin/user/${id}`,
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        swal("", "Xóa thành công", "success").then(() => {
+          window.location.assign("/admin__account").then(() => {
+            window.location.reload();
+          });
+        });
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
+};
+
+export const find__user__action = (keyword) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const res = await axios({
+          url: `http://localhost:2222/admin/user/find?user_name=${keyword}`,
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        dispatch({
+          type: GET__USERS,
+          payload: res.data,
+        });
+      }
+    } catch (error) {
+      handleError(error);
     }
   };
 };

@@ -64,6 +64,7 @@ public class ProductService<linkStoreImg> {
 
     public void CreateProduct(Product product, long pt_id, MultipartFile p_img) throws NotFoundException {
 //        "http://localhost:2222/"
+        System.out.println("create");
         ProductType productType = productTypeService.getProductTypeById(pt_id);
         if (validateProduct(product, true, null)) {
             String filename = timestamp.getTime() + "_" + p_img.getOriginalFilename();

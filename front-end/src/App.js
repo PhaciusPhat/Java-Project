@@ -6,7 +6,7 @@ import Cart from "./views/cart/Cart";
 import Change__pass from "./views/change-pass/Change__pass";
 import User from "./views/user/User";
 import Admin from "./views/admin/Admin";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Protected__route from "./auth/routes/Protected__route";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -16,6 +16,8 @@ import Admin__statictis from "./components/admin__statictis/Admin__statictis";
 import Admin__product__type from "./components/admin__product__type/Admin__product__type";
 import Admin__account from "./components/admin__account/Admin__account";
 import Product__type__form from "./components/product__type__form/Product__type__form";
+import Product__form from "./components/product__form/Product__form";
+import User__form from "./components/user__form/User__form";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,7 +46,30 @@ function App() {
               element={<Admin__product__type />}
             />
             <Route path="/admin__account" element={<Admin__account />} />
-            <Route path="/admin__product__type/form" element={<Product__type__form/>} ></Route>
+            {/*  */}
+            <Route
+              path="/admin__product__type/form"
+              element={<Product__type__form/>}
+            ></Route>
+            <Route
+              path="/admin__product__type/form/:id"
+              element={<Product__type__form />}
+            ></Route>
+            {/*  */}
+            <Route
+              path="/admin__product/form"
+              element={<Product__form />}
+            ></Route>
+            <Route
+              path="/admin__product/form/:id"
+              element={<Product__form />}
+            ></Route>
+            {/*  */}
+            <Route
+              path="/admin__account/form/:id"
+              element={<User__form />}
+            ></Route>
+
           </Route>
         </Routes>
       </BrowserRouter>

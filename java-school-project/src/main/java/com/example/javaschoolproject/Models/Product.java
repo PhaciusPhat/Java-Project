@@ -24,15 +24,12 @@ public class Product extends Auditable {
     @NotEmpty(message = "p_name not empty")
     @NotBlank(message = "p_name not blank")
     private String p_name;
-    @NotNull(message = "p_img not null")
-    @NotEmpty(message = "p_img not empty")
-    @NotBlank(message = "p_img not blank")
     private String p_img;
     @NotNull(message = "p_des not null")
     @NotEmpty(message = "p_des not empty")
     @NotBlank(message = "p_des not blank")
     private String p_des;
-    @NotNull(message = "p_number not null")
+    @NotNull(message = "    p_number not null")
     @NotEmpty(message = "p_number not empty")
     @NotBlank(message = "p_number not blank")
     private int p_number;

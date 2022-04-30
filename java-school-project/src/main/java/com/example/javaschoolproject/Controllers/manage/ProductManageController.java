@@ -49,6 +49,7 @@ public class ProductManageController {
                                            @RequestParam("p_number") @Valid int p_number,
                                            @RequestParam("p_price") @Valid int p_price) throws NotFoundException {
         Product product = new Product(p_name, p_img.getOriginalFilename(), p_des, p_number, p_price);
+        System.out.println(product);
         productService.CreateProduct(product, pt_id, p_img);
         return ResponseEntity.ok("Create product success");
     }
@@ -63,6 +64,7 @@ public class ProductManageController {
                                            @RequestParam("p_number") int p_number,
                                            @RequestParam("p_price") int p_price){
         ProductType productType = productTypeService.getProductTypeById(pt_id);
+        System.out.println("p_img: " + p_img);
         Product product = new Product();
         product.setP_name(p_name);
         product.setP_des(p_des);

@@ -19,7 +19,7 @@ function Home() {
   useEffect(() => {
     dispatch(get__products__action());
     dispatch(get__product__types__action());
-  }, []);
+  }, [dispatch]);
 
   const renderProductList = () => {
     return products?.map((product) => {

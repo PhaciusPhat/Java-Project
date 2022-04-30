@@ -1,7 +1,14 @@
-import { GET__INFO, LOGOUT } from "./../constants/redux__const";
+import {
+  GET__INFO,
+  GET__USER,
+  GET__USERS,
+  LOGOUT,
+} from "./../constants/redux__const";
 
 const initialState = {
   user: {},
+  users: [],
+  user__info: {},
 };
 
 const user__reducer = (state = initialState, { type, payload }) => {
@@ -12,6 +19,13 @@ const user__reducer = (state = initialState, { type, payload }) => {
     case LOGOUT:
       state.user = {};
       return { ...state };
+    case GET__USERS:
+      state.users = payload;
+      return { ...state };
+    case GET__USER:
+      state.user__info = payload;
+      return { ...state };
+
     default:
       return state;
   }

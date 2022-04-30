@@ -9,7 +9,6 @@ function Product__card(props) {
 
   const productDetail = (p_id) => {
     navigate(`/product/${p_id}`);
-    
   };
 
   return (

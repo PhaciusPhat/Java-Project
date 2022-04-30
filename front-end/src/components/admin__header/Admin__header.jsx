@@ -3,8 +3,9 @@ import "./Admin__header.scss";
 import { AiOutlineUser } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { logout__action } from "../../redux/actions/login__signup__action";
+import { Link } from "react-router-dom";
 
-function Admin__header({choose}) {
+function Admin__header({ choose }) {
   const { user } = useSelector((state) => state.user__reducer);
   const dispatch = useDispatch();
   const renderChoice = () => {
@@ -47,18 +48,27 @@ function Admin__header({choose}) {
         </div>
         <hr />
         <div className="admin__header__navigation">
-          <a href="/" className="admin__header__navigation__item">
+          <Link to="/admin" className="admin__header__navigation__item">
             Thống kê
-          </a>
-          <a href="/" className="admin__header__navigation__item">
+          </Link>
+          <Link
+            to="/admin__account"
+            className="admin__header__navigation__item"
+          >
             Quản lý tài khoản
-          </a>
-          <a href="/" className="admin__header__navigation__item">
+          </Link>
+          <Link
+            to="/admin__product"
+            className="admin__header__navigation__item"
+          >
             Quản lý sản phẩm
-          </a>
-          <a href="/" className="admin__header__navigation__item">
+          </Link>
+          <Link
+            to="/admin__product__type"
+            className="admin__header__navigation__item"
+          >
             Quản lý loại sản phẩm
-          </a>
+          </Link>
         </div>
       </div>
     </>

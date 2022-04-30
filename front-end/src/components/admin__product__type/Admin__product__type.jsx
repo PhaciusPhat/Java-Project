@@ -5,8 +5,15 @@ import Paginate from "./../paginate/Paginate";
 import Admin__header from "./../admin__header/Admin__header";
 import "../../views/admin/Admin.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { get__product__types__action } from "../../redux/actions/product__type__action";
+import {
+  find__product__types__action,
+  get__product__types__action,
+} from "../../redux/actions/product__type__action";
+import { Link, useNavigate } from "react-router-dom";
+import Product__type__form from "../product__type__form/Product__type__form";
 function Admin__product__type() {
+  // const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const { product__types } = useSelector(
@@ -16,7 +23,6 @@ function Admin__product__type() {
   useEffect(() => {
     dispatch(get__product__types__action());
   }, [dispatch]);
-
   const renderProductTypes = () => {
     return product__types?.map((product__type) => {
       return (
@@ -24,7 +30,11 @@ function Admin__product__type() {
           <div className="table__item">{product__type.pt_id}</div>
           <div className="table__item">{product__type.pt_name}</div>
           <div className="table__item">
-            <button>Xem chi tiết</button>
+            <button>
+              <a href={`/admin__product__type/form/${product__type.pt_id}`}>
+                Xem chi tiết
+              </a>
+            </button>
           </div>
         </div>
       );
@@ -35,10 +45,12 @@ function Admin__product__type() {
     <>
       <Admin__header choose={3} />
       <div className="admin__container">
-        <Admin__find__tool arr={[0]} />
+        <Admin__find__tool arr={[0]} findFunc={find__product__types__action} />
+        {/* <Paginate /> */}
+        <button className="add__data">
+          <a href={`/admin__product__type/form/`}>Thêm</a>
+        </button>
         <div className="admin__table">
-          {/* <Paginate /> */}
-          <button className="add__data">Thêm</button>
           <div className="table__title">
             <div className="table__item">Mã loại sản phẩm</div>
             <div className="table__item">Tên loại sản phẩm</div>

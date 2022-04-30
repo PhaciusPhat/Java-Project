@@ -1,0 +1,44 @@
+$main__color: #1b539e;
+.form__page {
+  margin: 5rem 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .form__container {
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+
+    background: rgb(245 245 250);
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    width: fit-content;
+
+    .form__input__group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form__input__button {
+      width: 100%;
+
+      display: flex;
+      justify-content: flex-end;
+      // align-items: center;
+      gap: 0.5rem;
+
+      input {
+        width: 100%;
+      }
+
+      button {
+        padding: 0.5rem;
+        background-color: $main__color;
+        color: white;
+      }
+    }
+  }
+}
