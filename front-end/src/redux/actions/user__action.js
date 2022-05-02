@@ -3,7 +3,7 @@ import swal from "sweetalert";
 import { GET__INFO, GET__USER, GET__USERS } from "./../constants/redux__const";
 
 const handleError = (error) => {
-  console.log(error.message);
+  console.log(error.response);
   if (error?.response?.status === 401) {
     swal("", "Phiên Đăng Nhập Hết Hạn", "error").then(() => {
       localStorage.removeItem("token");
@@ -15,7 +15,7 @@ const handleError = (error) => {
     swal("", "Không tìm thấy tài khoản của bạn", "error");
   } else if (error?.response?.status === 400) {
     swal(
-      "Không thể thay đổi hoặc xóa tài khoản của bạn hoặc tài khoản có quyền cao hơn",
+      "Không thể thực hiện tác vụ này",
       "",
       "error"
     );

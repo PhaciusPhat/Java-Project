@@ -27,7 +27,7 @@ function Admin__header({ choose }) {
       <div className="admin__header__container">
         <div className="admin__header__info">
           <div className="header__logo">
-            <img src="./images/logo.png" alt="" srcSet="" />
+            <Link to="/"><img src="./images/logo.png" alt="" srcSet="" /></Link>
           </div>
           <div className="header__info">
             <div className="header__info__name">

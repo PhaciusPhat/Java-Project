@@ -13,4 +13,5 @@ public class InvoiceDTO {
     private String iv_address;
     private String iv_describe;
     private UserDTO userDTO;
+    private long createdDate;
 }

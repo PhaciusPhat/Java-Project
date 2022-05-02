@@ -18,6 +18,11 @@ import Admin__account from "./components/admin__account/Admin__account";
 import Product__type__form from "./components/product__type__form/Product__type__form";
 import Product__form from "./components/product__form/Product__form";
 import User__form from "./components/user__form/User__form";
+import Invoice__form from "./components/invoice__form/Invoice__form";
+import {
+  get__account__invoice__action,
+  get__user__invoice__action,
+} from "./redux/actions/invoice__action";
 
 function App() {
   const dispatch = useDispatch();
@@ -49,7 +54,7 @@ function App() {
             {/*  */}
             <Route
               path="/admin__product__type/form"
-              element={<Product__type__form/>}
+              element={<Product__type__form />}
             ></Route>
             <Route
               path="/admin__product__type/form/:id"
@@ -69,7 +74,19 @@ function App() {
               path="/admin__account/form/:id"
               element={<User__form />}
             ></Route>
-
+            {/*  */}
+            <Route
+              path="/user/invoice/:id"
+              element={
+                <Invoice__form get__invoice={get__user__invoice__action} back__link={"/user"}/>
+              }
+            ></Route>
+            <Route
+              path="/admin/invoice/:id"
+              element={
+                <Invoice__form get__invoice={get__account__invoice__action} back__link={"/admin"}/>
+              }
+            ></Route>
           </Route>
         </Routes>
       </BrowserRouter>

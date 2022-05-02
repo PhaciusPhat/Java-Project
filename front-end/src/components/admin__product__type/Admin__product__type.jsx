@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Admin__find__tool from "./../admin__find__tool/Admin__find__tool";
 import "./Admin__product__type.scss";
 import Paginate from "./../paginate/Paginate";
-import Admin__header from "./../admin__header/Admin__header";
+import Admin__header from "../admin__header/Admin__header";
 import "../../views/admin/Admin.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {

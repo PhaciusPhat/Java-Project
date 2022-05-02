@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./User.scss";
 import Header from "./../../components/header/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { change__info } from "../../redux/actions/user__action";
 import { Link } from "react-router-dom";
+import { get__user__invoices__action } from "../../redux/actions/invoice__action";
+import { dateFormat } from "../../utils/helpers";
 function User() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user__reducer);
-
+  const { user__invoices } = useSelector((state) => state.invoice__reducer);
   const test = user;
 
   const handleChange = (e) => {
@@ -18,6 +20,32 @@ function User() {
     e.preventDefault();
     dispatch(change__info(test));
   };
+
+  const render__invoice = (e) => {
+    return user__invoices?.map((invoice) => {
+      const ts = new Date(invoice.createdDate);
+      return (
+        <div className="user__invoice" key={invoice.iv_id}>
+          <div className="user__invoice__item">Mã HD: {invoice.iv_id}</div>
+          <div className="user__invoice__item">
+            Tổng tiền: {invoice.iv_total}
+          </div>
+          <div className="user__invoice__item">
+            Ngày đặt hàng: {dateFormat(ts)}
+          </div>
+          <div className="user__invoice__item user__invoice__item__btn">
+            <button>
+              <a href={"/user/invoice/"+invoice.iv_id}>Xem chi tiết</a>
+            </button>
+          </div>
+        </div>
+      );
+    });
+  };
+
+  useEffect(() => {
+    dispatch(get__user__invoices__action());
+  }, [dispatch]);
 
   return (
     <>
@@ -68,22 +96,15 @@ function User() {
             <div className="user__container__right__header___title">
               Đổi mật khẩu
             </div>
-            <button><Link to="/change-pass">Đổi Mật Khẩu</Link></button>
+            <button>
+              <Link to="/change-pass">Đổi Mật Khẩu</Link>
+            </button>
           </div>
           <div className="user__container__right__footer">
             <div className="user__container__right__footer___title">
               Danh sách hóa đơn
             </div>
-            <div className="user__invoices">
-              <div className="user__invoice">
-                <div className="user__invoice__item">Mã HD: 1</div>
-                <div className="user__invoice__item">Tổng tiền: 100.000đ</div>
-                <div className="user__invoice__item">Ngày tạo: 20/10/2020</div>
-                <div className="user__invoice__item user__invoice__item__btn">
-                  <button>Xem chi tiết</button>
-                </div>
-              </div>
-            </div>
+            <div className="user__invoices">{render__invoice()}</div>
           </div>
         </div>
       </div>

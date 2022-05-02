@@ -10,6 +10,18 @@ function Header() {
   const { user } = useSelector((state) => state.user__reducer);
   const dispatch = useDispatch();
 
+  const render__role = () => {
+    if (user.user_role === "ADMIN" || user.user_role === "SUPER_ADMIN") {
+      return (
+        <li>
+          <Link to="/admin">Quản lý</Link>
+        </li>
+      );
+    } else {
+      return <></>;
+    }
+  };
+
   const renderNavigation = () => {
     if (user.user_name) {
       return (
@@ -18,6 +30,7 @@ function Header() {
             <li>
               <Link to="/user">Xin chào {user.user_name}</Link>
             </li>
+            {render__role()}
             <li>
               <Link
                 to="/"

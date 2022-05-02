@@ -8,17 +8,25 @@ import {
 } from "../../redux/actions/cart__action";
 import { priceFormatter } from "./../../utils/helpers";
 import swal from "sweetalert";
+import { Link } from "react-router-dom";
+import { create__invoice__action } from "../../redux/actions/invoice__action";
 function Cart() {
   const dispatch = useDispatch();
   const { carts } = useSelector((state) => state.cart__reducer);
 
-  const items = [];
+  let items = [];
   const [list, setList] = useState([]);
   const [total, setTotal] = useState(0);
+
+  const [invoice, setInvoice] = useState({
+    iv_address: "",
+    iv_describe: "",
+  });
 
   const choose__item = (e) => {
     const checkbox = e.target;
     let temp = total;
+    items = list;
     if (e.target.checked) {
       items.push(checkbox.getAttribute("data-key"));
       temp +=
@@ -36,6 +44,7 @@ function Cart() {
         checkbox.parentElement.parentElement.children[1].children[2].children[1]
           .value;
     }
+    console.log(items);
     setList(items);
     setTotal(temp);
   };
@@ -143,6 +152,7 @@ function Cart() {
                 id={`quantity__of__product__${item.cart_product.p_id}`}
                 onChange={change__number}
                 defaultValue={item.cart_number}
+                min="1"
               />
               <button
                 className="cart__item__quantity__plus"
@@ -198,9 +208,33 @@ function Cart() {
     dispatch(delete__cart(arr));
   };
 
+  const submit__invoices = () => {
+    if (list.length === 0) {
+      swal("", "Vui lòng chọn sản phẩm", "warning");
+    } else {
+      console.log("thanh toán");
+      const cartRequestList = [];
+      for (let index = 0; index < list.length; index++) {
+        const element = list[index];
+        cartRequestList.push({
+          p_id: element,
+          number: document.getElementById(`quantity__of__product__${element}`)
+            .value,
+        });
+      }
+      invoice.cartRequestList = cartRequestList;
+      dispatch(create__invoice__action(invoice));
+    }
+  };
+
   useEffect(() => {
     dispatch(get__carts__action());
   }, [dispatch]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInvoice({ ...invoice, [name]: value });
+  };
 
   return (
     <>
@@ -236,9 +270,11 @@ function Cart() {
             </div>
             <div>
               <textarea
+                onChange={handleChange}
                 rows="5"
                 cols="50"
                 className="cart__invoice__address__content"
+                name="iv_address"
               />
             </div>
           </div>
@@ -247,9 +283,11 @@ function Cart() {
             <div className="cart__invoice__describe__title">Mô tả đơn hàng</div>
             <div>
               <textarea
+                onChange={handleChange}
                 rows="5"
                 cols="50"
                 className="cart__invoice__describe__content"
+                name="iv_describe"
               />
             </div>
           </div>
@@ -263,9 +301,11 @@ function Cart() {
           </div>
           <hr />
           <div className="cart__invoice__button">
-            <button>Thanh toán</button>
+            <button onClick={submit__invoices}>Thanh toán</button>
             {/* <button>Thanh toán Zalopay</button> */}
-            <button>Tiếp tục mua hàng</button>
+            <button>
+              <Link to="/">Tiếp tục mua hàng</Link>
+            </button>
           </div>
         </div>
       </div>

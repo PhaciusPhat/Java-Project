@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Admin__header from "./../admin__header/Admin__header";
+import Admin__header from "../admin__header/Admin__header";
 import "../../views/admin/Admin__form.scss";
 import {
   add__product__type__action,

@@ -3,7 +3,8 @@ export const SIGN__UP = "SIGN__UP";
 export const LOGOUT = "LOGOUT";
 export const GET__INFO = "GET__INFO";
 export const GET__CART = "GET__CART";
-
+export const GET__USER__INVOICES = "GET__USER__INVOICES";
+export const GET__USER__INVOICE = "GET__USER__INVOICE";
 //MANAGE
 export const GET__PRODUCTS = "GET__PRODUCTS";
 export const GET__PRODUCT = "GET__PRODUCT";

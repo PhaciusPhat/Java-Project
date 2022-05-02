@@ -15,7 +15,7 @@ function User__form() {
 
   const { user__info } = useSelector((state) => state.user__reducer);
   const renderRoles = () => {
-    const roles = ["CLIENT", "ADMIN", "SUPER_ADMIN"];
+    const roles = ["CLIENT", "ADMIN"];
     return roles?.map((role, roles) => {
       return (
         <option key={roles} value={role}>
@@ -47,7 +47,6 @@ function User__form() {
 
   const submitForm = (e) => {
     e.preventDefault();
-    dispatch(update__user__action(user__info, id));
   };
 
   return (
@@ -97,7 +96,13 @@ function User__form() {
             {render()}
           </div>
           <div className="form__input__button">
-            <button className="btn btn-primary" type="submit">
+            <button
+              className="btn btn-primary"
+              type="submit"
+              onClick={() => {
+                dispatch(update__user__action(user__info, id));
+              }}
+            >
               Cập nhật
             </button>
             <button
