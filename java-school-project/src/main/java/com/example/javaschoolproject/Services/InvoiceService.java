@@ -125,7 +125,8 @@ public class InvoiceService {
 //            save invoice detail
             invoiceDetailService.save(invoiceDetail);
 //            delete cart
-            cartService.deleteCartItem(requestTokenHeader, invoiceDetail.getProducts().getP_id());
+            if(invoiceRequest.getCartRequestList().size() > 0)
+                cartService.deleteCartItem(requestTokenHeader, invoiceDetail.getProducts().getP_id());
         }
 //        find and resave invoice
         Invoice resave_invoice = invoiceRepository.findById(invoice.getIv_id()).get();

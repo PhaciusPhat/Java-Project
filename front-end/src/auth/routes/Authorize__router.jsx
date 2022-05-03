@@ -4,14 +4,22 @@ import { useEffect } from "react";
 import { get__info__action } from "../../redux/actions/user__action";
 import swal from "sweetalert";
 
-const Protected__route = () => {
+function Authorize__router() {
   const dispatch = useDispatch();
-
   const token = localStorage.getItem("token");
-
+  const { user } = useSelector((state) => state.user__reducer);
+  useEffect(() => {
+    dispatch(get__info__action());
+  }, [dispatch]);
   const navigate__to__route = () => {
     if (token) {
-      return <Outlet />;
+      if (user?.user_role === "ADMIN" || user?.user_role === "SUPER_ADMIN") {
+        return <Outlet />;
+      } else {
+        swal("", "Bạn không có quyền truy cập", "error").then(() => {
+          window.location.href = "/";
+        });
+      }
     } else {
       swal("", "Bạn chưa đăng nhập", "error").then(() => {
         window.location.href = "/login";
@@ -19,11 +27,7 @@ const Protected__route = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(get__info__action());
-  }, [dispatch]);
-
   return <>{navigate__to__route()}</>;
-};
+}
 
-export default Protected__route;
+export default Authorize__router;

@@ -24,6 +24,7 @@ import {
   get__user__invoice__action,
 } from "./redux/actions/invoice__action";
 
+import Authorize__router from "./auth/routes/Authorize__router";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -44,49 +45,59 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/change-pass" element={<Change__pass />} />
             <Route path="/user" element={<User />} />
-            <Route path="/admin" element={<Admin__statictis />} />
-            <Route path="/admin__product" element={<Admin__product />} />
-            <Route
-              path="/admin__product__type"
-              element={<Admin__product__type />}
-            />
-            <Route path="/admin__account" element={<Admin__account />} />
-            {/*  */}
-            <Route
-              path="/admin__product__type/form"
-              element={<Product__type__form />}
-            ></Route>
-            <Route
-              path="/admin__product__type/form/:id"
-              element={<Product__type__form />}
-            ></Route>
-            {/*  */}
-            <Route
-              path="/admin__product/form"
-              element={<Product__form />}
-            ></Route>
-            <Route
-              path="/admin__product/form/:id"
-              element={<Product__form />}
-            ></Route>
-            {/*  */}
-            <Route
-              path="/admin__account/form/:id"
-              element={<User__form />}
-            ></Route>
-            {/*  */}
-            <Route
-              path="/user/invoice/:id"
-              element={
-                <Invoice__form get__invoice={get__user__invoice__action} back__link={"/user"}/>
-              }
-            ></Route>
-            <Route
-              path="/admin/invoice/:id"
-              element={
-                <Invoice__form get__invoice={get__account__invoice__action} back__link={"/admin"}/>
-              }
-            ></Route>
+
+            {/* admin */}
+            <Route element={<Authorize__router />}>
+              <Route path="/admin" element={<Admin__statictis />} />
+              <Route path="/admin__product" element={<Admin__product />} />
+              <Route
+                path="/admin__product__type"
+                element={<Admin__product__type />}
+              />
+              <Route path="/admin__account" element={<Admin__account />} />
+              {/*  */}
+              <Route
+                path="/admin__product__type/form"
+                element={<Product__type__form />}
+              ></Route>
+              <Route
+                path="/admin__product__type/form/:id"
+                element={<Product__type__form />}
+              ></Route>
+              {/*  */}
+              <Route
+                path="/admin__product/form"
+                element={<Product__form />}
+              ></Route>
+              <Route
+                path="/admin__product/form/:id"
+                element={<Product__form />}
+              ></Route>
+              {/*  */}
+              <Route
+                path="/admin__account/form/:id"
+                element={<User__form />}
+              ></Route>
+              {/*  */}
+              <Route
+                path="/user/invoice/:id"
+                element={
+                  <Invoice__form
+                    get__invoice={get__user__invoice__action}
+                    back__link={"/user"}
+                  />
+                }
+              ></Route>
+              <Route
+                path="/admin/invoice/:id"
+                element={
+                  <Invoice__form
+                    get__invoice={get__account__invoice__action}
+                    back__link={"/admin"}
+                  />
+                }
+              ></Route>
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
