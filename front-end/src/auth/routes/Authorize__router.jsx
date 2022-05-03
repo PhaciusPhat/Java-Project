@@ -15,7 +15,8 @@ function Authorize__router() {
     if (token) {
       if (user?.user_role === "ADMIN" || user?.user_role === "SUPER_ADMIN") {
         return <Outlet />;
-      } else {
+      }
+      if (user?.user_role === "CLIENT") {
         swal("", "Bạn không có quyền truy cập", "error").then(() => {
           window.location.href = "/";
         });

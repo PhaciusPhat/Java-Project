@@ -45,7 +45,15 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/change-pass" element={<Change__pass />} />
             <Route path="/user" element={<User />} />
-
+            <Route
+              path="/user/invoice/:id"
+              element={
+                <Invoice__form
+                  get__invoice={get__user__invoice__action}
+                  back__link={"/user"}
+                />
+              }
+            ></Route>
             {/* admin */}
             <Route element={<Authorize__router />}>
               <Route path="/admin" element={<Admin__statictis />} />
@@ -79,15 +87,7 @@ function App() {
                 element={<User__form />}
               ></Route>
               {/*  */}
-              <Route
-                path="/user/invoice/:id"
-                element={
-                  <Invoice__form
-                    get__invoice={get__user__invoice__action}
-                    back__link={"/user"}
-                  />
-                }
-              ></Route>
+
               <Route
                 path="/admin/invoice/:id"
                 element={
