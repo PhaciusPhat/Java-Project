@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import swal from "sweetalert";
 import { signup__action } from "../../redux/actions/login__signup__action";
+import { regexEmail, regexName, regexPassword, regexPhone, regexUsername } from "../../utils/regex";
 
 function Sign__up() {
   const dispatch = useDispatch();
@@ -21,9 +23,54 @@ function Sign__up() {
     });
   };
 
+  const validate = () => {
+    if (
+      user.user_username === "" ||
+      user.user_password === "" ||
+      user.user_phone === "" ||
+      user.user_name === "" ||
+      user.user_email === ""
+    ) {
+      swal("", "điền đầy đủ thông tin", "error");
+      return false;
+    } else {
+      if (user.user_username.match(regexUsername) === null) {
+        swal(
+          "",
+          "username phải có ít nhất 6 ký tự và không có ký tự đặc biệt",
+          "error"
+        );
+        return false;
+      }
+      if (user.user_password.match(regexPassword) === null) {
+        swal(
+          "",
+          "password phải có ít nhất 6 ký tự và có chứa 1 ký tự số",
+          "error"
+        );
+        return false;
+      }
+      if (user.user_phone.match(regexPhone) === null) {
+        swal("", "số điện thoại không hợp lệ", "error");
+        return false;
+      }
+      if (user.user_email.match(regexEmail) === null) {
+        swal("", "email không hợp lệ", "error");
+        return false;
+      }
+      if (user.user_name.match(regexName) === null) {
+        swal("", "tên phải có ít nhất 6 ký tự", "error");
+        return false;
+      }
+      return true;
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(signup__action(user));
+    if (validate()) {
+      dispatch(signup__action(user));
+    }
   };
 
   return (

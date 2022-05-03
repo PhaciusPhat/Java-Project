@@ -1,11 +1,18 @@
-import React, { useEffect } from "react";
-import { AiOutlineMinus, AiOutlineSearch } from "react-icons/ai";
+import React, { useEffect, useState } from "react";
+import {
+  AiOutlineMinus,
+  AiOutlineSearch,
+  AiOutlineReload,
+} from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
+import { find__invoices__action } from "../../redux/actions/invoice__action";
 import {
   get__products__action,
   get__pt__products__action,
 } from "../../redux/actions/product__action";
 import { get__product__types__action } from "../../redux/actions/product__type__action";
+import { dateFormatForInput } from "../../utils/helpers";
+
 function Admin__find__tool(props) {
   const dispatch = useDispatch();
   const { arr } = props;
@@ -13,6 +20,11 @@ function Admin__find__tool(props) {
   const { product__types } = useSelector(
     (state) => state.product__type__reducer
   );
+  const [data, setData] = useState({
+    start_date: new Date(dateFormatForInput(0)).getTime(),
+    end_date: new Date(dateFormatForInput(1)).getTime(),
+    user_name: "",
+  });
   const renderTool = () => {
     const items = document.getElementsByClassName("find__tool__input");
     for (let item of items) {
@@ -27,7 +39,7 @@ function Admin__find__tool(props) {
     const value = e.target.value;
     const target = e.target;
     // console.log(target.parentElement.parentElement.children[0])
-    target.parentElement.parentElement.children[0].children[1].value = ""
+    target.parentElement.parentElement.children[0].children[1].value = "";
     if (Number(value) === -1) {
       dispatch(get__products__action());
     } else {
@@ -52,16 +64,27 @@ function Admin__find__tool(props) {
 
   const handleChange = (e) => {
     const target = e.target;
-    target.parentElement.parentElement.children[1].children[1].value = -1;
-    dispatch(findFunc(e.target.value));
+    dispatch(
+      findFunc(
+        e.target.value,
+        target.parentElement.parentElement.children[1].children[1].value
+      )
+    );
   };
 
+  const handleChangeInvoice = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleChange__date = (e) => {
+    setData({ ...data, [e.target.name]: new Date(e.target.value).getTime() });
+  };
   return (
     <>
       <div className="find__tool">
         <div className="find__tool__input">
           <label htmlFor="">Tìm kiếm theo tên</label>
-          <input type="text" onChange={handleChange} />
+          <input type="text" onChange={handleChange} id="user_name" />
         </div>
         <div className="find__tool__input">
           <label htmlFor="">Tìm kiếm theo loại</label>
@@ -71,19 +94,50 @@ function Admin__find__tool(props) {
           </select>
         </div>
         <div className="find__tool__input">
+          <label htmlFor="">Tìm kiếm theo tên</label>
+          <input type="text" name="user_name" onChange={handleChangeInvoice} />
+        </div>
+        <div className="find__tool__input">
           <label htmlFor="">Tìm kiếm theo ngày</label>
           <div className="find__date">
-            <input type="date" />
+            {/* dateFormat(new Date()) */}
+            <input
+              type="date"
+              defaultValue={dateFormatForInput(0)}
+              name="start_date"
+              onChange={handleChange__date}
+            />
             <AiOutlineMinus />
-            <input type="date" />
+            <input
+              type="date"
+              defaultValue={dateFormatForInput(1)}
+              name="end_date"
+              onChange={handleChange__date}
+            />
           </div>
         </div>
         <div className="find__tool__input">
           <label htmlFor="" style={{ color: "transparent" }}>
             <AiOutlineMinus />
           </label>
-          <button>
+          <button
+            onClick={() => {
+              dispatch(find__invoices__action(data));
+            }}
+          >
             <AiOutlineSearch />
+          </button>
+        </div>
+        <div className="find__tool__input">
+          <label htmlFor="" style={{ color: "transparent" }}>
+            <AiOutlineMinus />
+          </label>
+          <button
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            <AiOutlineReload />
           </button>
         </div>
       </div>

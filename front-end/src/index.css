@@ -49,3 +49,8 @@ a{
 ::-webkit-scrollbar-thumb:hover {
   background: #1b539e; 
 }
+
+
+textarea{
+  resize: none;
+}

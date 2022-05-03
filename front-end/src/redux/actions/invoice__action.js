@@ -1,44 +1,19 @@
 import axios from "axios";
 import swal from "sweetalert";
-import { GET__INVOICE , GET__USER__INVOICES, GET__USER__INVOICE, GET__INVOICES } from "../constants/redux__const";
+import { invoice__error } from "../../utils/error__handler";
+import {
+  GET__INVOICE,
+  GET__USER__INVOICES,
+  GET__USER__INVOICE,
+  GET__INVOICES,
+} from "../constants/redux__const";
+import { endLoadingAction, startLoadingAction } from "./common__action";
 
-const handleError = (error) => {
-  console.log(error);
-  if (error?.response?.status === 401) {
-    swal("", "Phiên Đăng Nhập Hết Hạn", "error").then(() => {
-      localStorage.removeItem("token");
-      window.location.assign("/").then(() => {
-        window.location.reload();
-      });
-    });
-  }
-  if (error?.response?.status === 403) {
-    swal("", "Bạn không có quyền hạn này", "error").then(() => {
-      localStorage.removeItem("token");
-      window.location.assign("/").then(() => {
-        window.location.reload();
-      });
-    });
-  } else if (error?.response?.status === 404) {
-    swal("", "Không tìm dữ liệu", "error").then(() => {
-      window.location.assign("/").then(() => {
-        window.location.reload();
-      });
-    });
-  } else if (error?.response?.status === 400) {
-    swal("", "Không đủ số lượng trong kho", "error");
-  } else {
-    swal("", "Lỗi Server", "error").then(() => {
-      window.location.assign("/").then(() => {
-        window.location.reload();
-      });
-    });
-  }
-};
 
 export const create__invoice__action = (data) => {
   return async (dispatch) => {
     try {
+      startLoadingAction(dispatch);
       await axios({
         method: "POST",
         url: "http://localhost:2222/api/invoice/",
@@ -47,9 +22,16 @@ export const create__invoice__action = (data) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      swal("", "Đặt hàng thành công", "success");
+
+      endLoadingAction(dispatch);
+      swal("", "Đặt hàng thành công", "success").then(() => {
+        window.location.assign("/").then(() => {
+          window.location.reload();
+        });
+      });
     } catch (error) {
-      handleError(error);
+      endLoadingAction(dispatch);
+      invoice__error(error);
     }
   };
 };
@@ -69,7 +51,7 @@ export const get__user__invoices__action = () => {
         payload: response.data,
       });
     } catch (error) {
-      handleError(error);
+      invoice__error(error);
     }
   };
 };
@@ -89,7 +71,7 @@ export const get__user__invoice__action = (id) => {
         payload: response.data,
       });
     } catch (error) {
-      handleError(error);
+      invoice__error(error);
     }
   };
 };
@@ -109,7 +91,7 @@ export const get__account__invoices__action = () => {
         payload: response.data,
       });
     } catch (error) {
-      handleError(error);
+      invoice__error(error);
     }
   };
 };
@@ -117,7 +99,7 @@ export const get__account__invoices__action = () => {
 export const get__account__invoice__action = (id) => {
   return async (dispatch) => {
     try {
-      console.log(id)
+      console.log(id);
       const response = await axios({
         method: "GET",
         url: `http://localhost:2222/admin/invoice/${id}`,
@@ -130,7 +112,51 @@ export const get__account__invoice__action = (id) => {
         payload: response.data,
       });
     } catch (error) {
-      handleError(error);
+      invoice__error(error);
+    }
+  };
+};
+
+export const find__invoices__action = (data) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: `http://localhost:2222/admin/invoice/findByDateAndUser?start_date=${data.start_date}&end_date=${data.end_date}&user_name=${data.user_name}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      dispatch({
+        type: GET__INVOICES,
+        payload: response.data,
+      });
+    } catch (error) {
+      invoice__error(error);
+    }
+  };
+};
+
+export const update__invoice = (id) => {
+  return async (dispatch) => {
+    try {
+      // startLoadingAction(dispatch);
+      await axios({
+        method: "PUT",
+        url: `http://localhost:2222/api/invoice/${id}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      // endLoadingAction(dispatch);
+      swal("", "Cập nhật thành công", "success").then(() => {
+        window.location.assign("/user").then(() => {
+          window.location.reload();
+        });
+      });
+    } catch (error) {
+      // endLoadingAction(dispatch);
+      invoice__error(error);
     }
   };
 };

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 import { login__action } from "../../redux/actions/login__signup__action";
+import { regexPassword, regexUsername } from "../../utils/regex";
 import "./Login.scss";
 
 function Login() {
@@ -19,7 +21,35 @@ function Login() {
 
   const login = (e) => {
     e.preventDefault();
-    dispatch(login__action(user, navigate));
+    if (validate()) {
+      dispatch(login__action(user, navigate));
+    }
+  };
+
+  const validate = () => {
+    const { username, password } = user;
+    if (username.length === 0 || password.length === 0) {
+      swal("", "điền đầy đủ thông tin", "error");
+      return false;
+    } else {
+      if (username.match(regexUsername) === null) {
+        swal(
+          "",
+          "username phải có ít nhất 6 ký tự và không có ký tự đặc biệt",
+          "error"
+        );
+        return false;
+      }
+      if (password.match(regexPassword) === null) {
+        swal(
+          "",
+          "password phải có ít nhất 6 ký tự và có chứa 1 ký tự số",
+          "error"
+        );
+        return false;
+      }
+      return true;
+    }
   };
 
   return (
@@ -40,7 +70,12 @@ function Login() {
               {/* username */}
               <div className="form__input__group">
                 <label htmlFor="username">TÀI KHOẢN</label>
-                <input type="text" name="username" onChange={handleChange} />
+                <input
+                  type="text"
+                  name="username"
+                  onChange={handleChange}
+                  pattern="/^[a-zA-Z0-9]{6,}$/"
+                />
               </div>
               {/* password */}
               <div className="form__input__group">
@@ -49,6 +84,7 @@ function Login() {
                   type="password"
                   name="password"
                   onChange={handleChange}
+                  pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$"
                 />
               </div>
             </div>

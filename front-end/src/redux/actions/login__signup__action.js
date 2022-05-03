@@ -1,5 +1,6 @@
 import axios from "axios";
 import swal from "sweetalert";
+import { login__error, signup__error } from "../../utils/error__handler";
 import { LOGOUT } from "./../constants/redux__const";
 
 export const login__action = (user, navigate) => {
@@ -12,13 +13,7 @@ export const login__action = (user, navigate) => {
         window.location.reload();
       });
     } catch (error) {
-      if (error?.response?.status === 400) {
-        swal("", "Mật Khẩu Hoặc Tài khoản Không Đúng", "error");
-      } else if (error?.response?.status === 500) {
-        swal("", "Server có vấn đề", "error");
-      } else {
-        swal("", "Đăng Nhập Thất Bại", "error");
-      }
+      login__error(error);
     }
   };
 };
@@ -39,20 +34,14 @@ export const logout__action = () => {
 export const signup__action = (user) => {
   return async () => {
     try {
-      const res = await axios.post("http://localhost:2222/register", user);
+      await axios.post("http://localhost:2222/register", user);
       swal("", "Đăng Ký Thành Công", "success").then(() => {
         window.location.assign("/login").then(() => {
           window.location.reload();
         });
       });
     } catch (error) {
-      if (error?.response?.status === 400) {
-        swal("", "Đã tồn tại tài khoản hoặc email này", "error");
-      } else if (error?.response?.status === 500) {
-        swal("", "Server có vấn đề", "error");
-      } else {
-        swal("", "Đăng Ký Thất Bại", "error");
-      }
+      signup__error(error);
     }
   };
 };

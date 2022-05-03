@@ -8500,6 +8500,11 @@
   "resolved" "https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.0.0.tgz"
   "version" "1.0.0"
 
+"usehooks-ts@^2.5.2":
+  "integrity" "sha512-keONG+M5aax8eN9kEZeayNBgK+7MSLVGCuP18pSdce5D5iLiImCxqkm04GWYSkA7Xpo0GWnPOK3cXAOY/K+T1g=="
+  "resolved" "https://registry.npmjs.org/usehooks-ts/-/usehooks-ts-2.5.2.tgz"
+  "version" "2.5.2"
+
 "util-deprecate@^1.0.1", "util-deprecate@^1.0.2", "util-deprecate@~1.0.1":
   "integrity" "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8="
   "resolved" "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"

@@ -46,5 +46,13 @@ public class InvoiceController {
         return ResponseEntity.ok("Create invoice successfully");
     }
 
+    @SneakyThrows
+    @PutMapping("/{iv_id}")
+    public ResponseEntity<?> updateInvoice(HttpServletRequest request, @PathVariable long iv_id) {
+        final String requestTokenHeader = request.getHeader("Authorization");
+        invoiceService.updateStatusInvoice(requestTokenHeader, iv_id);
+        return ResponseEntity.ok("Update invoice successfully");
+    }
+
 
 }

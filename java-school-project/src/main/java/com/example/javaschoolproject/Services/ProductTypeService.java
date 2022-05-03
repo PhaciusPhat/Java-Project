@@ -2,6 +2,7 @@ package com.example.javaschoolproject.Services;
 
 import com.example.javaschoolproject.Exception.BadRequestException;
 import com.example.javaschoolproject.Exception.NotFoundException;
+import com.example.javaschoolproject.Models.Product;
 import com.example.javaschoolproject.Models.ProductType;
 import com.example.javaschoolproject.Repository.ProductTypeRepository;
 import lombok.RequiredArgsConstructor;
@@ -62,5 +63,7 @@ public class ProductTypeService {
         }
         productTypeRepository.delete(productType);
     }
+
+
 }
 

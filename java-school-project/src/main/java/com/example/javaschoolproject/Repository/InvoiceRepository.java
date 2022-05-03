@@ -14,6 +14,9 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
     @Query("from Invoice i where i.user.user_id = ?1")
     List<Invoice> getInvoicesByUser(@Param("user_id") long user_id);
 
+    @Query("from Invoice i where i.user.user_id = ?1 and i.iv_id = ?2")
+    Invoice getInvoicesByUserAndId(@Param("user_id") long user_id, @Param("iv_id") long iv_id);
+
     @Query("from Invoice i where i.createdDate >= ?1 and i.createdDate <= ?2 and i.user.user_id = ?3")
     List<Invoice> getInvoicesByDate(@Param("start_date") long start_date, @Param("end_date") long end_date, @Param("user_id") long user_id);
 

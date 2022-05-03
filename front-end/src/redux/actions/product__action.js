@@ -1,32 +1,12 @@
 import axios from "axios";
 import swal from "sweetalert";
-import { GET__PRODUCT, GET__PRODUCTS } from "./../constants/redux__const";
+import {
+  FIND__PRODUCT,
+  GET__PRODUCT,
+  GET__PRODUCTS,
+} from "./../constants/redux__const";
+import { product__error } from "./../../utils/error__handler";
 
-const handleError = (error) => {
-  console.log(error?.response);
-  if (error?.response?.status === 401) {
-    swal("", "Phiên Đăng Nhập Hết Hạn", "error").then(() => {
-      localStorage.removeItem("token");
-      window.location.assign("/").then(() => {
-        window.location.reload();
-      });
-    });
-  } else if (error?.response?.status === 404) {
-    swal("", "Không tìm dữ liệu", "error").then(() => {
-      window.location.assign("/404").then(() => {
-        window.location.reload();
-      });
-    });
-  } else if (error?.response?.status === 400) {
-    swal("", "Đã tồn tại sản phẩm này", "error");
-  } else {
-    swal("", "Lỗi Server", "error").then(() => {
-      window.location.assign("/").then(() => {
-        window.location.reload();
-      });
-    });
-  }
-};
 
 export const get__products__action = () => {
   return async (dispatch) => {
@@ -37,7 +17,7 @@ export const get__products__action = () => {
         payload: res.data,
       });
     } catch (error) {
-      swal("", "Lỗi kết nối", "error");
+      product__error(error);
     }
   };
 };
@@ -53,7 +33,7 @@ export const get__pt__products__action = (id) => {
         payload: res.data,
       });
     } catch (error) {
-      swal("", "Lỗi kết nối", "error");
+      product__error(error);
     }
   };
 };
@@ -69,7 +49,23 @@ export const find__products__action = (find) => {
         payload: res.data,
       });
     } catch (error) {
-      swal("", "Lỗi kết nối", "error");
+      product__error(error);
+    }
+  };
+};
+
+export const find__header__products__action = (find) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:2222/api/product/find?p_name=${find}`
+      );
+      dispatch({
+        type: FIND__PRODUCT,
+        payload: res.data,
+      });
+    } catch (error) {
+      product__error(error);
     }
   };
 };
@@ -83,9 +79,7 @@ export const get__product__action = (id) => {
         payload: res.data,
       });
     } catch (error) {
-      swal("", "Lỗi kết nối", "error").then(() => {
-        window.location.href = "/";
-      });
+      product__error(error);
     }
   };
 };
@@ -111,7 +105,7 @@ export const add__product__action = (newProduct, id, isAdd) => {
         window.location.assign("/admin__product");
       });
     } catch (error) {
-      handleError(error);
+      product__error(error);
     }
   };
 };
@@ -130,7 +124,31 @@ export const delete__product__action = (id) => {
         window.location.assign("/admin__product");
       });
     } catch (error) {
-      handleError(error);
+      product__error(error);
+    }
+  };
+};
+
+export const find__products__by__pt__and__name__action = (name, pt_id) => {
+  return async (dispatch) => {
+    try {
+      const url =
+        Number(pt_id) === -1
+          ? `http://localhost:2222/admin/product/find?p_name=${name}`
+          : `http://localhost:2222/admin/product/findProductListByNameAndProductTypeId?p_name=${name}&pt_id=${pt_id}`;
+      const res = await axios({
+        url: url,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      dispatch({
+        type: GET__PRODUCTS,
+        payload: res.data,
+      });
+    } catch (error) {
+      product__error(error);
     }
   };
 };

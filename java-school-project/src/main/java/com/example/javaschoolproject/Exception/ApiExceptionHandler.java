@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
 import java.time.ZoneId;
@@ -69,11 +70,12 @@ public class ApiExceptionHandler {
         return errorMessage;
     }
 
-//    @ExceptionHandler(IOException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public String handleIOException(IOException e) {
-//        String errorMessage = "Something wrong";
-//        return errorMessage;
-//    }
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String ApiExceptionHandler(MaxUploadSizeExceededException e) {
+        String errorMessage = "File is too big";
+        return errorMessage;
+    }
+
 
 }

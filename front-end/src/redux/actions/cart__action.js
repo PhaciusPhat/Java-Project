@@ -1,6 +1,7 @@
 import axios from "axios";
 import swal from "sweetalert";
 import { GET__CART } from "./../constants/redux__const";
+import { user__error } from "./../../utils/error__handler";
 
 export const add__cart = (product) => {
   return async (dispatch) => {
@@ -12,18 +13,7 @@ export const add__cart = (product) => {
       });
       swal("", "Thêm vào giỏ hàng thành công", "success");
     } catch (error) {
-      console.log(error.message);
-      if (error?.response?.status === 401) {
-        swal("", "Phiên Đăng Nhập Hết Hạn", "error");
-        localStorage.removeItem("token");
-        window.location.assign("/").then(() => {
-          window.location.reload();
-        });
-      } else if (error?.response?.status === 404) {
-        swal("", "Không tìm thấy tài khoản của bạn", "error");
-      } else {
-        swal("", "Lỗi Server", "error");
-      }
+      user__error(error);
     }
   };
 };
@@ -42,18 +32,7 @@ export const get__carts__action = () => {
         payload: res.data,
       });
     } catch (error) {
-      console.log(error.message);
-      if (error?.response?.status === 401) {
-        swal("", "Phiên Đăng Nhập Hết Hạn", "error");
-        localStorage.removeItem("token");
-        window.location.assign("/").then(() => {
-          window.location.reload();
-        });
-      } else if (error?.response?.status === 404) {
-        swal("", "Không tìm thấy tài khoản của bạn", "error");
-      } else {
-        swal("", "Lỗi Server", "error");
-      }
+      user__error(error);
     }
   };
 };
@@ -61,7 +40,6 @@ export const get__carts__action = () => {
 export const delete__cart = (arr) => {
   return async (dispatch) => {
     try {
-
       await axios({
         method: "delete",
         url: "http://localhost:2222/api/cart/",
@@ -77,17 +55,7 @@ export const delete__cart = (arr) => {
         });
       });
     } catch (error) {
-      if (error?.response?.status === 401) {
-        swal("", "Phiên Đăng Nhập Hết Hạn", "error");
-        localStorage.removeItem("token");
-        window.location.assign("/").then(() => {
-          window.location.reload();
-        });
-      } else if (error?.response?.status === 404) {
-        swal("", "Không tìm thấy tài khoản của bạn", "error");
-      } else {
-        swal("", "Lỗi Server", "error");
-      }
+      user__error(error);
     }
   };
 };

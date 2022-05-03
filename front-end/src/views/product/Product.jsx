@@ -19,7 +19,7 @@ function Product() {
 
   useEffect(() => {
     dispatch(get__product__action(id));
-  }, []);
+  }, [dispatch, id]);
 
   const render__product = () => {
     if (product !== undefined) {
@@ -43,8 +43,11 @@ function Product() {
                 </div>
               </div>
 
-              <button onClick={() => add__cart__btn(product?.p_id)}>
-                Thêm vào giỏ hàng
+              <button
+                onClick={() => add__cart__btn(product?.p_id)}
+                disabled={product?.p_number < 1}
+              >
+                {product?.p_number < 1 ? "Hết Hàng" : "Thêm vào giỏ hàng"}
               </button>
             </div>
           </div>

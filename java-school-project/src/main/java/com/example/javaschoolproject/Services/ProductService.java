@@ -50,9 +50,9 @@ public class ProductService<linkStoreImg> {
         if (product != null && create) {
             throw new BadRequestException("Already exists product have this name");
         }
-        if(product != null){
+        if (product != null) {
 //            check name of found product with product want to update
-            if(!product.getP_name().equals(check.getP_name())){
+            if (!product.getP_name().equals(check.getP_name())) {
                 throw new BadRequestException("Already exists product have this name");
             }
         }
@@ -78,7 +78,7 @@ public class ProductService<linkStoreImg> {
 
     public void updateProduct(Product product, long p_id, MultipartFile p_img) throws NotFoundException {
         Product p = getProductById(p_id);
-        if(validateProduct(product, false, p)){
+        if (validateProduct(product, false, p)) {
 //            check file and upload file
             if (p_img.getSize() > 0) {
                 String filename = timestamp.getTime() + "_" + p_img.getOriginalFilename();
@@ -110,5 +110,9 @@ public class ProductService<linkStoreImg> {
         Product product = getProductById(p_id);
         product.setP_number(product.getP_number() - p_number);
         productRepository.save(product);
+    }
+
+    public List<Product> findProductListByNameAndProductTypeId(String name, Long pt_id) {
+        return productRepository.findProductListByNameAndProductTypeId(name, pt_id);
     }
 }

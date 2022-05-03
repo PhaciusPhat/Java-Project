@@ -19,6 +19,7 @@
     "redux-thunk": "^2.4.1",
     "sass": "^1.50.1",
     "sweetalert": "^2.1.2",
+    "usehooks-ts": "^2.5.2",
     "web-vitals": "^2.1.0"
   },
   "scripts": {

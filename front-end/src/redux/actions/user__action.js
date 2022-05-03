@@ -1,28 +1,7 @@
 import axios from "axios";
 import swal from "sweetalert";
+import { user__error } from "../../utils/error__handler";
 import { GET__INFO, GET__USER, GET__USERS } from "./../constants/redux__const";
-
-const handleError = (error) => {
-  console.log(error.response);
-  if (error?.response?.status === 401) {
-    swal("", "Phiên Đăng Nhập Hết Hạn", "error").then(() => {
-      localStorage.removeItem("token");
-      window.location.assign("/").then(() => {
-        window.location.reload();
-      });
-    });
-  } else if (error?.response?.status === 404) {
-    swal("", "Không tìm thấy tài khoản của bạn", "error");
-  } else if (error?.response?.status === 400) {
-    swal(
-      "Không thể thực hiện tác vụ này",
-      "",
-      "error"
-    );
-  } else {
-    swal("", "Lỗi Server", "error");
-  }
-};
 
 export const get__info__action = () => {
   return async (dispatch) => {
@@ -45,7 +24,7 @@ export const get__info__action = () => {
         });
       }
     } catch (error) {
-      handleError(error);
+      user__error(error);
     }
   };
 };
@@ -68,7 +47,7 @@ export const change__info = (user) => {
         });
       }
     } catch (error) {
-      handleError(error);
+      user__error(error);
     }
   };
 };
@@ -93,7 +72,6 @@ export const change__pass = (user) => {
         });
       }
     } catch (error) {
-      console.log(error.message);
       if (error?.response?.status === 401) {
         swal("", "Phiên Đăng Nhập Hết Hạn", "error").then(() => {
           localStorage.removeItem("token");
@@ -130,7 +108,7 @@ export const get__users__action = () => {
         });
       }
     } catch (error) {
-      handleError(error);
+      user__error(error);
     }
   };
 };
@@ -153,7 +131,7 @@ export const get__user__info__action = (id) => {
         });
       }
     } catch (error) {
-      handleError(error);
+      user__error(error);
     }
   };
 };
@@ -178,7 +156,7 @@ export const update__user__action = (user, id) => {
         });
       }
     } catch (error) {
-      handleError(error);
+      user__error(error);
     }
   };
 };
@@ -202,7 +180,7 @@ export const delete__user__action = (id) => {
         });
       }
     } catch (error) {
-      handleError(error);
+      user__error(error);
     }
   };
 };
@@ -225,7 +203,7 @@ export const find__user__action = (keyword) => {
         });
       }
     } catch (error) {
-      handleError(error);
+      user__error(error);
     }
   };
 };

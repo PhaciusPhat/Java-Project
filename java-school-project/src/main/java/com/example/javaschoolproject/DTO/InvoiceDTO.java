@@ -12,6 +12,7 @@ public class InvoiceDTO {
     private long iv_total;
     private String iv_address;
     private String iv_describe;
+    private boolean iv_status;
     private UserDTO userDTO;
     private long createdDate;
 }

@@ -5,6 +5,8 @@ export const GET__INFO = "GET__INFO";
 export const GET__CART = "GET__CART";
 export const GET__USER__INVOICES = "GET__USER__INVOICES";
 export const GET__USER__INVOICE = "GET__USER__INVOICE";
+export const START__LOADING = "START__LOADING";
+export const STOP__LOADING = "STOP__LOADING";
 //MANAGE
 export const GET__PRODUCTS = "GET__PRODUCTS";
 export const GET__PRODUCT = "GET__PRODUCT";

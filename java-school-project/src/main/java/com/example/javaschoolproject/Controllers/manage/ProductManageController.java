@@ -19,18 +19,19 @@ import javax.validation.Valid;
 public class ProductManageController {
     private final ProductService productService;
     private final ProductTypeService productTypeService;
+
     @GetMapping
     public ResponseEntity<?> getProductList() {
         return ResponseEntity.ok(productService.getProductList());
     }
 
     @GetMapping("/find")
-    public ResponseEntity<?> getProductListByName(@RequestParam String p_name){
+    public ResponseEntity<?> getProductListByName(@RequestParam String p_name) {
         return ResponseEntity.ok(productService.getProductListByName(p_name));
     }
 
     @GetMapping("/findByProductType/{pt_id}")
-    public ResponseEntity<?> getProductListByProductTypeId(@PathVariable Long pt_id){
+    public ResponseEntity<?> getProductListByProductTypeId(@PathVariable Long pt_id) {
         return ResponseEntity.ok(productService.getProductListByProductTypeId(pt_id));
     }
 
@@ -62,7 +63,7 @@ public class ProductManageController {
                                            @RequestParam("p_name") String p_name,
                                            @RequestParam("p_des") String p_des,
                                            @RequestParam("p_number") int p_number,
-                                           @RequestParam("p_price") int p_price){
+                                           @RequestParam("p_price") int p_price) {
         ProductType productType = productTypeService.getProductTypeById(pt_id);
         System.out.println("p_img: " + p_img);
         Product product = new Product();
@@ -77,9 +78,14 @@ public class ProductManageController {
 
     @SneakyThrows
     @DeleteMapping("/{p_id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long p_id){
+    public ResponseEntity<?> deleteProduct(@PathVariable Long p_id) {
         productService.deleteProduct(p_id);
         return ResponseEntity.ok("Delete product successful");
+    }
+
+    @GetMapping("/findProductListByNameAndProductTypeId")
+    public ResponseEntity<?> findProductListByNameAndProductTypeId(@RequestParam String p_name, @RequestParam Long pt_id) {
+        return ResponseEntity.ok(productService.findProductListByNameAndProductTypeId(p_name, pt_id));
     }
 
 

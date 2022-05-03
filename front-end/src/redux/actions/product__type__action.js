@@ -1,31 +1,7 @@
 import axios from "axios";
 import swal from "sweetalert";
+import { product__type__error } from "../../utils/error__handler";
 import { GET__PRODUCTTYPE, GET__PRODUCTTYPES } from "../constants/redux__const";
-const handleError = (error) => {
-  console.log(error);
-  if (error?.response?.status === 401) {
-    swal("", "Phiên Đăng Nhập Hết Hạn", "error").then(() => {
-      localStorage.removeItem("token");
-      window.location.assign("/").then(() => {
-        window.location.reload();
-      });
-    });
-  } else if (error?.response?.status === 404) {
-    swal("", "Không tìm dữ liệu", "error").then(() => {
-      window.location.assign("/404").then(() => {
-        window.location.reload();
-      });
-    });
-  } else if (error?.response?.status === 400) {
-    swal("", "Đã tồn tại loại sản phẩm này", "error");
-  } else {
-    swal("", "Lỗi Server", "error").then(() => {
-      window.location.assign("/").then(() => {
-        window.location.reload();
-      });
-    });
-  }
-};
 
 export const get__product__types__action = () => {
   return async (dispatch) => {
@@ -36,7 +12,7 @@ export const get__product__types__action = () => {
         payload: res.data,
       });
     } catch (error) {
-      swal("", "Lỗi kết nối", "error");
+      product__type__error(error);
     }
   };
 };
@@ -58,7 +34,7 @@ export const get__product__type__action = (id) => {
         payload: res.data,
       });
     } catch (error) {
-      handleError(error);
+      product__type__error(error);
     }
   };
 };
@@ -87,7 +63,7 @@ export const add__product__type__action = (product__type, id, isAdd) => {
         });
       });
     } catch (error) {
-      handleError(error);
+      product__type__error(error);
     }
   };
 };
@@ -108,20 +84,7 @@ export const delete__product__type__action = (id) => {
         });
       });
     } catch (error) {
-      console.log(error);
-      if (error?.response?.status === 401) {
-        swal("", "Phiên Đăng Nhập Hết Hạn", "error");
-        localStorage.removeItem("token");
-        window.location.assign("/").then(() => {
-          window.location.reload();
-        });
-      } else if (error?.response?.status === 404) {
-        swal("", "Không tìm thấy tài khoản của bạn", "error");
-      } else if (error?.response?.status === 400) {
-        swal("", "Không thể xóa loại sản phẩm này", "error");
-      } else {
-        swal("", "Lỗi Server", "error");
-      }
+      product__type__error(error);
     }
   };
 };
@@ -141,7 +104,7 @@ export const find__product__types__action = (keyword) => {
         payload: res.data,
       });
     } catch (error) {
-      handleError(error);
+      product__type__error(error);
     }
   };
 };

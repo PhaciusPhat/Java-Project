@@ -22,6 +22,8 @@ public class Invoice extends Auditable{
     private long iv_id;
     @NotNull
     private long iv_total;
+    @NotNull
+    private boolean iv_status;
     @NotNull(message = "iv_address not null")
     @NotEmpty(message = "iv_address not empty")
     @NotBlank(message = "iv_address not blank")

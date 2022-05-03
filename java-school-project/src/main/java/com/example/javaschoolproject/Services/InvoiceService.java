@@ -130,6 +130,7 @@ public class InvoiceService {
 //        find and resave invoice
         Invoice resave_invoice = invoiceRepository.findById(invoice.getIv_id()).get();
         resave_invoice.setIv_total(total);
+        resave_invoice.setIv_status(false);
         invoiceRepository.save(resave_invoice);
 //        send email
         emailService.sendMail(user.getUser_email(),
@@ -141,5 +142,13 @@ public class InvoiceService {
                         + "\n" + "Nếu có thắc mắc gì xin liên hệ qua số điện thoại: 0774802203. Trân Trọng!");
     }
 
-
+    public void updateStatusInvoice(String requestTokenHeader, long iv_id) throws NotFoundException {
+        User user = userService.getUserByUsername(userService.getUsernameFromToken(requestTokenHeader));
+        Invoice invoice = invoiceRepository.findById(iv_id).orElseThrow(() -> new NotFoundException("Invoice not found"));
+        if (invoice.getUser().getUser_id() != user.getUser_id()) {
+            throw new NotFoundException("Invoice not found");
+        }
+        invoice.setIv_status(true);
+        invoiceRepository.save(invoice);
+    }
 }

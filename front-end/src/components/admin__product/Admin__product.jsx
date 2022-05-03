@@ -6,6 +6,7 @@ import "../../views/admin/Admin.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {
   find__products__action,
+  find__products__by__pt__and__name__action,
   get__products__action,
 } from "../../redux/actions/product__action";
 import { priceFormatter } from "../../utils/helpers";
@@ -40,7 +41,7 @@ function Admin__product() {
     <>
       <Admin__header choose={2} />
       <div className="admin__container">
-        <Admin__find__tool arr={[0, 1, 3]} findFunc={find__products__action} />
+        <Admin__find__tool arr={[0, 1, 5]} findFunc={find__products__by__pt__and__name__action} />
 
         <button className="add__data">
           <a href={"/admin__product/form/"}>Thêm</a>

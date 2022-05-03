@@ -10,10 +10,12 @@ import { priceFormatter } from "./../../utils/helpers";
 import swal from "sweetalert";
 import { Link } from "react-router-dom";
 import { create__invoice__action } from "../../redux/actions/invoice__action";
+import { regexAddress } from "../../utils/regex";
+import Loader from './../../components/loader/Loader';
 function Cart() {
   const dispatch = useDispatch();
   const { carts } = useSelector((state) => state.cart__reducer);
-
+  const { isLoading } = useSelector((state) => state.common__reducer);
   let items = [];
   const [list, setList] = useState([]);
   const [total, setTotal] = useState(0);
@@ -212,10 +214,15 @@ function Cart() {
     if (list.length === 0) {
       swal("", "Vui lòng chọn sản phẩm", "warning");
     } else {
-      console.log("thanh toán");
       const cartRequestList = [];
       for (let index = 0; index < list.length; index++) {
         const element = list[index];
+        if (
+          document.getElementById(`quantity__of__product__${element}`).value < 1
+        ) {
+          swal("", "Vui lòng nhập số lượng đúng định dạng", "warning");
+          return;
+        }
         cartRequestList.push({
           p_id: element,
           number: document.getElementById(`quantity__of__product__${element}`)
@@ -223,6 +230,14 @@ function Cart() {
         });
       }
       invoice.cartRequestList = cartRequestList;
+      if (invoice.iv_address === "") {
+        swal("", "Vui lòng nhập địa chỉ ", "warning");
+        return;
+      }
+      if (invoice.iv_address.match(regexAddress) === null) {
+        swal("", "Vui lòng nhập địa chỉ đúng định dạng", "warning");
+        return;
+      }
       dispatch(create__invoice__action(invoice));
     }
   };
@@ -238,6 +253,7 @@ function Cart() {
 
   return (
     <>
+      {isLoading && <Loader />}
       <Header />
       <div className="cart__container">
         <div className="cart__content">

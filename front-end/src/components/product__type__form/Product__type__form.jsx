@@ -8,6 +8,8 @@ import {
 } from "../../redux/actions/product__type__action";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { regexName } from "../../utils/regex";
+import swal from "sweetalert";
 function Product__type__form(props) {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -21,8 +23,22 @@ function Product__type__form(props) {
     event.preventDefault();
   };
 
+  const validate = () => {
+    if (product__type.pt_name === undefined || product__type.pt_name === "") {
+      swal("", "Tên loại sản phẩm không được để trống", "error");
+      return false;
+    }
+    if (product__type.pt_name.match(regexName) === null) {
+      swal("", "Tên loại sản phẩm ko hợp lệ", "error");
+      return false;
+    }
+    return true;
+  };
+
   const add__product__type = (isAdd) => {
-    dispatch(add__product__type__action(product__type, id, isAdd));
+    if (validate()) {
+      dispatch(add__product__type__action(product__type, id, isAdd));
+    }
   };
 
   useEffect(() => {

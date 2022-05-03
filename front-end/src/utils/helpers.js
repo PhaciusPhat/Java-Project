@@ -14,3 +14,10 @@ export const dateFormat = (today) => {
   if (mm < 10) mm = "0" + mm;
   return dd + "/" + mm + "/" + yyyy;
 };
+
+export const dateFormatForInput = (numberOfDaysToAdd) => {
+  const today = new Date();
+  const date = today.setDate(today.getDate() + numberOfDaysToAdd);
+  const defaultValue = new Date(date).toISOString().split("T")[0];
+  return defaultValue;
+};
