@@ -18,6 +18,24 @@ export const add__cart = (product) => {
   };
 };
 
+export const add__local__cart__action = (local__cart) => {
+  return async (dispatch) => {
+    try {
+      await axios({
+        url: "http://localhost:2222/api/cart/addLocal/",
+        data: local__cart,
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      localStorage.removeItem("cart__storage");
+    } catch (error) {
+      user__error(error);
+    }
+  };
+};
+
 export const get__carts__action = () => {
   return async (dispatch) => {
     try {

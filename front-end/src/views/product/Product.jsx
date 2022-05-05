@@ -12,9 +12,25 @@ function Product() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const token = localStorage.getItem("token");
-  const add__cart__btn = (p_id) => {
-    if (token) dispatch(add__cart({ p_id, number: 1 }));
-    else swal("Đăng nhập trước khi thêm sản phẩm vào giỏ hàng", "", "warning");
+  const cart__storage = JSON.parse(localStorage.getItem("cart__storage"));
+  if (cart__storage === null) {
+    localStorage.setItem("cart__storage", JSON.stringify([]));
+  }
+  const add__cart__btn = (product) => {
+    if (token) dispatch(add__cart({ p_id: product.p_id, number: 1 }));
+    else {
+      const index = cart__storage.findIndex(
+        (item) => item.p_id === product.p_id
+      );
+      if (index === -1) {
+        product.number = 1;
+        cart__storage.push(product);
+      } else cart__storage[index].number++;
+      localStorage.setItem("cart__storage", JSON.stringify(cart__storage));
+      swal("", "Thêm sản phẩm vào giỏ hàng thành công", "success");
+    }
+
+    // swal("Đăng nhập trước khi thêm sản phẩm vào giỏ hàng", "", "warning");
   };
 
   useEffect(() => {
@@ -42,9 +58,8 @@ function Product() {
                   Loại Sản Phẩm: {product?.product_type?.pt_name}
                 </div>
               </div>
-
               <button
-                onClick={() => add__cart__btn(product?.p_id)}
+                onClick={() => add__cart__btn(product)}
                 disabled={product?.p_number < 1}
               >
                 {product?.p_number < 1 ? "Hết Hàng" : "Thêm vào giỏ hàng"}

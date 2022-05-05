@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+import { add__local__cart__action } from "../../redux/actions/cart__action";
 import { login__action } from "../../redux/actions/login__signup__action";
 import { regexPassword, regexUsername } from "../../utils/regex";
 import "./Login.scss";
@@ -19,10 +20,12 @@ function Login() {
     setUser({ ...user, [name]: value });
   };
 
+  const { want__to__pay } = useSelector((state) => state.invoice__reducer);
   const login = (e) => {
     e.preventDefault();
+
     if (validate()) {
-      dispatch(login__action(user, navigate));
+      dispatch(login__action(user, navigate, want__to__pay));
     }
   };
 
@@ -95,7 +98,7 @@ function Login() {
                 Đăng Nhập
               </button>
               {/* google login */}
-              {/* <button></button> */}
+              <button>Đăng nhập Google</button>
               {/* sign-up */}
               <Link to="/sign-up">Chưa có tài khoản? Đăng ký!</Link>
             </div>

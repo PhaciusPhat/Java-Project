@@ -36,6 +36,14 @@ public class CartController {
     }
 
     @SneakyThrows
+    @PostMapping("/addLocal/")
+    public ResponseEntity<?> addLocalCartItem(HttpServletRequest request, @RequestBody @Valid List<CartRequest> cartRequestList) {
+        final String requestTokenHeader = request.getHeader("Authorization");
+        cartService.addLocalCartItem(requestTokenHeader, cartRequestList);
+        return ResponseEntity.ok("Add items to cart success");
+    }
+
+    @SneakyThrows
     @DeleteMapping("/")
     public ResponseEntity<?> deleteCartItem(HttpServletRequest request, @RequestBody List<Long> products) {
         final String requestTokenHeader = request.getHeader("Authorization");

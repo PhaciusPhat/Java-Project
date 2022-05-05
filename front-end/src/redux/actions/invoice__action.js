@@ -6,13 +6,20 @@ import {
   GET__USER__INVOICES,
   GET__USER__INVOICE,
   GET__INVOICES,
+  WANT__TO__PAY,
 } from "../constants/redux__const";
 import { endLoadingAction, startLoadingAction } from "./common__action";
 
-
-export const create__invoice__action = (data) => {
+export const create__invoice__action = (data, isNullToken) => {
   return async (dispatch) => {
     try {
+      if (isNullToken) {
+        swal("", "Vui lòng đăng nhập để thanh toán", "warning").then(() => {
+          want__to__pay__action(dispatch);
+        });
+        return;
+      }
+
       startLoadingAction(dispatch);
       await axios({
         method: "POST",
@@ -159,4 +166,18 @@ export const update__invoice = (id) => {
       invoice__error(error);
     }
   };
+};
+
+export const want__to__pay__action = (dispatch) => {
+  dispatch({
+    payload: true,
+    type: WANT__TO__PAY,
+  });
+};
+
+export const reset__want__to__pay__action = (dispatch) => {
+  dispatch({
+    payload: false,
+    type: WANT__TO__PAY,
+  });
 };

@@ -26,6 +26,10 @@ import {
 
 import Authorize__router from "./auth/routes/Authorize__router";
 function App() {
+  const cart__storage = JSON.parse(localStorage.getItem("cart__storage"));
+  if (cart__storage === null) {
+    localStorage.setItem("cart__storage", JSON.stringify([]));
+  }
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(get__info__action());
@@ -40,9 +44,9 @@ function App() {
           <Route path="/sign-up" element={<Sign__up />} />
           <Route path="/product/:id" element={<Product />} />
 
+          <Route path="/cart" element={<Cart />} />
           <Route element={<Protected__route />}>
             {/* thanh toán */}
-            <Route path="/cart" element={<Cart />} />
             <Route path="/change-pass" element={<Change__pass />} />
             <Route path="/user" element={<User />} />
             <Route

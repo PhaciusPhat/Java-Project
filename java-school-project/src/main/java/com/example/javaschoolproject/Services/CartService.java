@@ -1,5 +1,6 @@
 package com.example.javaschoolproject.Services;
 
+import com.example.javaschoolproject.Exception.BadRequestException;
 import com.example.javaschoolproject.Exception.NotFoundException;
 import com.example.javaschoolproject.Models.*;
 import com.example.javaschoolproject.Repository.CartRepository;
@@ -56,6 +57,15 @@ public class CartService {
             cart.setCart_number(number);
         }
         cartRepository.save(cart);
+    }
+
+    public void addLocalCartItem(String requestTokenHeader, List<CartRequest> cartRequestList) throws NotFoundException {
+        if (cartRequestList.size() == 0) {
+            throw new BadRequestException("not found this product in cart");
+        }
+        for (CartRequest cartRequest : cartRequestList) {
+            addCartItem(requestTokenHeader, cartRequest);
+        }
     }
 
     public void deleteCartItem(String requestTokenHeader, Long p_id) throws NotFoundException {

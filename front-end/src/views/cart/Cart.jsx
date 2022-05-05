@@ -11,9 +11,10 @@ import swal from "sweetalert";
 import { Link } from "react-router-dom";
 import { create__invoice__action } from "../../redux/actions/invoice__action";
 import { regexAddress } from "../../utils/regex";
-import Loader from './../../components/loader/Loader';
+import Loader from "./../../components/loader/Loader";
 function Cart() {
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
   const { carts } = useSelector((state) => state.cart__reducer);
   const { isLoading } = useSelector((state) => state.common__reducer);
   let items = [];
@@ -46,7 +47,6 @@ function Cart() {
         checkbox.parentElement.parentElement.children[1].children[2].children[1]
           .value;
     }
-    console.log(items);
     setList(items);
     setTotal(temp);
   };
@@ -175,6 +175,65 @@ function Cart() {
     });
   };
 
+  const render__local__cart = () => {
+    const cart__storage = JSON.parse(localStorage.getItem("cart__storage"));
+    return cart__storage.map((item) => {
+      return (
+        <div className="cart__item" key={item.p_id}>
+          <div className="cart__item__img">
+            <input
+              type="checkbox"
+              className="check"
+              data-key={item.p_id}
+              onClick={choose__item}
+            />
+            <img src={item.p_img} alt="" />
+          </div>
+          <div className="cart__item__info">
+            <div className="cart__item__info__name">{item.p_name}</div>
+
+            <div
+              className="cart__item__price"
+              data-key={item.p_price}
+              id={`price__of__product__${item.p_id}`}
+            >
+              {priceFormatter(item.p_price)}
+            </div>
+
+            <div className="cart__item__quantity">
+              <button
+                className="cart__item__quantity__minus"
+                onClick={increase__decrease__number}
+              >
+                -
+              </button>
+              <input
+                className="cart__item__quantity__number"
+                type="number"
+                id={`quantity__of__product__${item.p_id}`}
+                onChange={change__number}
+                defaultValue={item.number}
+                min="1"
+              />
+              <button
+                className="cart__item__quantity__plus"
+                onClick={increase__decrease__number}
+              >
+                +
+              </button>
+            </div>
+
+            <div className="cart__item__button">
+              <button onClick={() => delete__item(item.p_id)}>
+                Xóa khỏi giỏ hàng
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  };
+
   const choose__all = (e) => {
     const checkboxes = document.getElementsByClassName("check");
     let temp = 0;
@@ -201,13 +260,25 @@ function Cart() {
     if (list.length === 0) {
       swal("", "Vui lòng chọn sản phẩm", "warning");
     } else {
-      dispatch(delete__cart(list));
+      if (token) {
+        dispatch(delete__cart(list));
+      } else {
+        localStorage.removeItem("cart__storage");
+        window.location.reload();
+      }
     }
   };
 
   const delete__item = (p_id) => {
-    const arr = [p_id];
-    dispatch(delete__cart(arr));
+    if (token) {
+      const arr = [p_id];
+      dispatch(delete__cart(arr));
+    } else{
+      const cart__storage = JSON.parse(localStorage.getItem("cart__storage"));
+      const new__cart__storage = cart__storage.filter(item => item.p_id !== p_id);
+      localStorage.setItem("cart__storage", JSON.stringify(new__cart__storage));
+      window.location.reload();
+    }
   };
 
   const submit__invoices = () => {
@@ -238,12 +309,14 @@ function Cart() {
         swal("", "Vui lòng nhập địa chỉ đúng định dạng", "warning");
         return;
       }
-      dispatch(create__invoice__action(invoice));
+      dispatch(create__invoice__action(invoice, token === null));
     }
   };
 
   useEffect(() => {
-    dispatch(get__carts__action());
+    if (token) {
+      dispatch(get__carts__action());
+    }
   }, [dispatch]);
 
   const handleChange = (e) => {
@@ -275,7 +348,7 @@ function Cart() {
                   <div className="cart__item__button">Xóa</div>
                 </div>
               </div>
-              {render__carts()}
+              {token ? render__carts() : render__local__cart()}
             </div>
           </div>
         </div>
@@ -317,7 +390,7 @@ function Cart() {
           </div>
           <hr />
           <div className="cart__invoice__button">
-            <button onClick={submit__invoices}>Thanh toán</button>
+            <button onClick={submit__invoices}>Thanh toán (COD)</button>
             {/* <button>Thanh toán Zalopay</button> */}
             <button>
               <Link to="/">Tiếp tục mua hàng</Link>
