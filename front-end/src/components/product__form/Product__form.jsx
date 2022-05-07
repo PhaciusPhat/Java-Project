@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { get__product__types__action } from "../../redux/actions/product__type__action";
 import swal from "sweetalert";
 import { regexName } from "../../utils/regex";
+import { regexDes } from './../../utils/regex';
 function Product__form() {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -109,7 +110,7 @@ function Product__form() {
       swal("", "Tên sản phẩm không hợp lệ", "error");
       return false;
     }
-    if (product.p_des.match(regexName) === null) {
+    if (product.p_des.match(regexDes) === null) {
       swal("", "Mô tả sản phẩm không hợp lệ", "error");
       return false;
     }

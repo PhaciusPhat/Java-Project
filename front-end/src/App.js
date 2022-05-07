@@ -31,6 +31,8 @@ function App() {
     localStorage.setItem("cart__storage", JSON.stringify([]));
   }
   const dispatch = useDispatch();
+
+  
   useEffect(() => {
     dispatch(get__info__action());
   }, [dispatch]);
