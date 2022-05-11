@@ -7,11 +7,26 @@ import {
 } from "./../constants/redux__const";
 import { product__error } from "./../../utils/error__handler";
 
-
 export const get__products__action = () => {
   return async (dispatch) => {
     try {
       const res = await axios.get("http://localhost:2222/api/product/");
+      dispatch({
+        type: GET__PRODUCTS,
+        payload: res.data,
+      });
+    } catch (error) {
+      product__error(error);
+    }
+  };
+};
+
+export const get__products__admin__action = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("http://localhost:2222/admin/product/", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
       dispatch({
         type: GET__PRODUCTS,
         payload: res.data,
@@ -114,13 +129,13 @@ export const delete__product__action = (id) => {
   return async (dispatch) => {
     try {
       await axios({
-        url: `http://localhost:2222/admin/product/${id}`,
-        method: "DELETE",
+        url: `http://localhost:2222/admin/product/active/${id}`,
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      swal("", "Xóa sản phẩm thành công", "success").then(() => {
+      swal("", "Thao tác thành công", "success").then(() => {
         window.location.assign("/admin__product");
       });
     } catch (error) {

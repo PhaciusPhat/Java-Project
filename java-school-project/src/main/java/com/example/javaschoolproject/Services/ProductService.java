@@ -28,6 +28,10 @@ public class ProductService<linkStoreImg> {
         return productRepository.findAll();
     }
 
+    public List<Product> getActiveProducts() {
+        return productRepository.findProductListByActive(true);
+    }
+
     public Product getProductById(long p_id) throws NotFoundException {
         return productRepository.findById(p_id).orElseThrow(() -> new NotFoundException("Product not found"));
     }
@@ -72,6 +76,7 @@ public class ProductService<linkStoreImg> {
             filename = linkStoreImg + filename;
             product.setP_img(filename);
             product.setProduct_type(productType);
+            product.setP_isActive(true);
             productRepository.save(product);
         }
     }
@@ -99,10 +104,8 @@ public class ProductService<linkStoreImg> {
 
     public void deleteProduct(long p_id) throws NotFoundException {
         Product product = getProductById(p_id);
-        if (product.getCartUserList().size() > 0 || product.getInvoiceDetailList().size() > 0) {
-            throw new BadRequestException("Can not delete this product");
-        }
-        productRepository.deleteById(p_id);
+        product.setP_isActive(!product.isP_isActive());
+        productRepository.save(product);
     }
 
 
@@ -115,4 +118,5 @@ public class ProductService<linkStoreImg> {
     public List<Product> findProductListByNameAndProductTypeId(String name, Long pt_id) {
         return productRepository.findProductListByNameAndProductTypeId(name, pt_id);
     }
+
 }

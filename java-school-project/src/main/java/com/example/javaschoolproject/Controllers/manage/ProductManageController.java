@@ -77,7 +77,7 @@ public class ProductManageController {
     }
 
     @SneakyThrows
-    @DeleteMapping("/{p_id}")
+    @PutMapping("/active/{p_id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long p_id) {
         productService.deleteProduct(p_id);
         return ResponseEntity.ok("Delete product successful");

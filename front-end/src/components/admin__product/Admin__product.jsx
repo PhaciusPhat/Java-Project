@@ -8,6 +8,7 @@ import {
   find__products__action,
   find__products__by__pt__and__name__action,
   get__products__action,
+  get__products__admin__action,
 } from "../../redux/actions/product__action";
 import { priceFormatter } from "../../utils/helpers";
 function Admin__product() {
@@ -15,7 +16,7 @@ function Admin__product() {
   const { products } = useSelector((state) => state.product__reducer);
 
   useEffect(() => {
-    dispatch(get__products__action());
+    dispatch(get__products__admin__action());
   }, [dispatch]);
 
   const renderProductList = () => {
@@ -27,6 +28,7 @@ function Admin__product() {
           <div className="table__item">{priceFormatter(product.p_price)}</div>
           <div className="table__item">{product.p_number}</div>
           <div className="table__item">{product.product_type.pt_name}</div>
+          <div className="table__item">{product.p_isActive ? "Còn bán" : "dừng bán"}</div>
           <div className="table__item">
             <button>
               <a href={"/admin__product/form/" + product.p_id}>Xem chi tiết</a>
@@ -54,6 +56,7 @@ function Admin__product() {
             <div className="table__item">Giá</div>
             <div className="table__item">Số lượng</div>
             <div className="table__item">Loại sản phẩm</div>
+            <div className="table__item">Trạng thái</div>
             <div className="table__item">Thao tác</div>
           </div>
           <div className="table__database__list">{renderProductList()}</div>

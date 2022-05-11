@@ -23,4 +23,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("from Product s where s.p_name LIKE CONCAT('%',:p_name,'%') and s.product_type.pt_id=:pt_id")
     List<Product> findProductListByNameAndProductTypeId(@Param("p_name") String p_name, @Param("pt_id") long pt_id);
 
+    @Query("from Product s where s.p_isActive=:p_active")
+    List<Product> findProductListByActive(@Param("p_active") boolean p_active);
 }

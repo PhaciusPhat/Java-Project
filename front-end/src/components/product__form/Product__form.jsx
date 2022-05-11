@@ -46,7 +46,7 @@ function Product__form() {
               dispatch(delete__product__action(id));
             }}
           >
-            Xóa
+            {product.p_isActive ? "Dừng bán" : "Tiếp tục bán"}
           </button>
         </div>
       );

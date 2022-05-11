@@ -37,6 +37,7 @@ public class Product extends Auditable {
     @NotEmpty(message = "p_price not empty")
     @NotBlank(message = "p_price not blank")
     private int p_price;
+    private boolean p_isActive;
 //    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "pt_id", nullable = false, referencedColumnName = "pt_id")

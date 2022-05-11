@@ -17,8 +17,13 @@ function Product() {
     localStorage.setItem("cart__storage", JSON.stringify([]));
   }
   const add__cart__btn = (product) => {
-    if (token) dispatch(add__cart({ p_id: product.p_id, number: 1 }));
-    else {
+    if (token) {
+      if (product.p_isActive) {
+        dispatch(add__cart({ p_id: product.p_id, number: 1 }));
+      } else {
+        swal("", "Sản phẩm không còn bán", "warning");
+      }
+    } else {
       const index = cart__storage.findIndex(
         (item) => item.p_id === product.p_id
       );

@@ -109,7 +109,7 @@ function Header() {
 
   const handleChange = (e) => {
     setFind(e.target.value);
-    dispatch(find__header__products__action(e.target.value));
+    // dispatch(find__header__products__action(e.target.value));
   };
 
   useEffect(() => {
