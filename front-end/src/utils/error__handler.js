@@ -92,7 +92,7 @@ export const product__type__error = (error) => {
       });
     });
   } else if (error?.response?.status === 400) {
-    swal("", "Đã tồn loại tại sản phẩm này", "error");
+    swal("", "Đã tồn loại sản phẩm này", "error");
   } else if (error?.response?.status === 403) {
     swal("", "Bạn không có quyền truy cập", "error").then(() => {
       window.location.assign("/").then(() => {

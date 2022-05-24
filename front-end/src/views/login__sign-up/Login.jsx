@@ -97,8 +97,6 @@ function Login() {
               <button type="submit" onClick={login}>
                 Đăng Nhập
               </button>
-              {/* google login */}
-              <button>Đăng nhập Google</button>
               {/* sign-up */}
               <Link to="/sign-up">Chưa có tài khoản? Đăng ký!</Link>
             </div>

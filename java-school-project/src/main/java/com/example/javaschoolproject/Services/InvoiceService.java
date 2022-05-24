@@ -90,9 +90,9 @@ public class InvoiceService {
         for (CartRequest cq : invoiceRequest.getCartRequestList()) {
 //            find product
             Product product = productService.getProductById(cq.getP_id());
-            if(!product.isP_isActive()){
-                throw new BadRequestException("Product is not available");
-            }
+//            if(!product.isP_isActive()){
+//                throw new BadRequestException("Product is not available");
+//            }
 //            check product ammount
             if (product.getP_number() < cq.getNumber()) {
 //                throw exception if product ammount is less than cart ammount

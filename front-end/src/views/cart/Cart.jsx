@@ -39,6 +39,7 @@ function Cart() {
         checkbox.parentElement.parentElement.children[1].children[2].children[1]
           .value;
     } else {
+      checkbox.parentElement.parentElement.parentElement.parentElement.parentElement.children[0].children[0].children[0].checked = false;
       items.splice(items.indexOf(checkbox.getAttribute("data-key")), 1);
       temp -=
         checkbox.parentElement.parentElement.children[1].children[1].getAttribute(
@@ -273,9 +274,11 @@ function Cart() {
     if (token) {
       const arr = [p_id];
       dispatch(delete__cart(arr));
-    } else{
+    } else {
       const cart__storage = JSON.parse(localStorage.getItem("cart__storage"));
-      const new__cart__storage = cart__storage.filter(item => item.p_id !== p_id);
+      const new__cart__storage = cart__storage.filter(
+        (item) => item.p_id !== p_id
+      );
       localStorage.setItem("cart__storage", JSON.stringify(new__cart__storage));
       window.location.reload();
     }

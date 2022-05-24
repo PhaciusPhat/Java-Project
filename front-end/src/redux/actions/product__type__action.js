@@ -84,6 +84,10 @@ export const delete__product__type__action = (id) => {
         });
       });
     } catch (error) {
+      if (error?.response?.status === 400) {
+        swal("", "không thể xóa loại sản phẩm này", "error");
+        return;
+      }
       product__type__error(error);
     }
   };
