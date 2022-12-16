@@ -1,2 +1,21 @@
-server:
-  port: 4000
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: ${URL}
+    username: ${USERNAME}
+    password: ${PASSWORD}
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: ERROR
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

@@ -1,6 +1,5 @@
-package group.artifact.entity.Comment;
+package group.artifact.entity.Invoice;
 
-import group.artifact.entity.Account.Account;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,22 +8,21 @@ import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
-
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Comment")
-public class Comment {
+@Table(name = "InvoiceDiscount")
+public class InvoiceDiscount {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    private Long discount;
+    private String condition;
     private String content;
-    private Long rate;
-    @ManyToOne
-    @JoinColumn(name = "accountId")
-    private Account account;
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    private List<CommentFiles> commentFiles;
+    private Long StartDate;
+    private Long EndDate;
+    @OneToMany(mappedBy = "invoiceDiscount", cascade = CascadeType.ALL)
+    private List<Invoice> invoices;
 }
