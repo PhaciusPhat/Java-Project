@@ -20,13 +20,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    private String SKU;
     private String slug;
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    List<Category> categories;
+    private boolean disabled;
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
+    List<Category> subCategories;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     List<Product> products;
     @ManyToOne
     @JoinColumn(name = "categoryId")
-    private Category category;
+    private Category parentCategory;
 }

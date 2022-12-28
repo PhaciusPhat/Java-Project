@@ -16,7 +16,6 @@ import lombok.Setter;
 public class ProductSize {
     @EmbeddedId
     private ProductSizeKey productSizeKey;
-
     @ManyToOne
     @MapsId("productId")
     @JoinColumn(name="productId")

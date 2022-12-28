@@ -1,5 +1,6 @@
 package group.artifact.entity.Product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class Size {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String size;
+    @JsonIgnore
     @OneToMany(mappedBy = "size", cascade = CascadeType.ALL)
     private List<ProductSize> productSizes;
 }

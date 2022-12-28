@@ -1,27 +1,24 @@
-package group.artifact.entity.Location;
-
+package group.artifact.entity.Account;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.UUID;
+
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "District")
-public class District {
+@Table(name = "Address")
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String name;
+    private String detail;
     @ManyToOne
-    @JoinColumn(name = "cityId")
-    private City city;
-    @OneToMany(mappedBy = "district", cascade = CascadeType.ALL)
-    private List<Address> addresses;
+    @JoinColumn(name = "accountId")
+    private Account account;
 }

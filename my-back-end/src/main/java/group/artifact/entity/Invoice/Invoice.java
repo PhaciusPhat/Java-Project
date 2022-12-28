@@ -1,6 +1,7 @@
 package group.artifact.entity.Invoice;
 
 import group.artifact.entity.Account.Account;
+import group.artifact.entity.AuditEntity;
 import group.artifact.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Invoice")
-public class Invoice {
+public class Invoice extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

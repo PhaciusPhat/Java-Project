@@ -1,8 +1,8 @@
 package group.artifact.entity.Account;
 
+import group.artifact.entity.AuditEntity;
 import group.artifact.entity.Cart.Cart;
 import group.artifact.entity.Comment.Comment;
-import group.artifact.entity.Location.Address;
 import group.artifact.entity.Invoice.Invoice;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Account")
-public class Account {
+public class Account extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

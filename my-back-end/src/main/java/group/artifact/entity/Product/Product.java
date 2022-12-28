@@ -1,5 +1,6 @@
 package group.artifact.entity.Product;
 
+import group.artifact.entity.AuditEntity;
 import group.artifact.entity.Cart.Cart;
 import group.artifact.entity.Invoice.InvoiceDetail;
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Product")
-public class Product {
+public class Product extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -26,6 +27,7 @@ public class Product {
     private String thumbnail;
     private String description;
     private Long amount;
+    private Long weight;
     private Boolean disable;
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private ProductPrice productPrice;
