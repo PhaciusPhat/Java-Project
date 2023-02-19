@@ -17,8 +17,8 @@ public class ProductPrice {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private Long oldPrice;
-    private Long newPrice;
+    private Long currentPrice;
+    private Long salePrice;
     private Long startDate;
     private Long endDate;
     @OneToOne(cascade = CascadeType.ALL)
